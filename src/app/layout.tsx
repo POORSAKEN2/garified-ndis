@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { home } from "@/content/site";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -18,9 +19,8 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Garified | Business support for NDIS providers",
-  description:
-    "Rostering, administration, marketing and accounting support, thoughtfully organised around your Australian NDIS provider business.",
+  title: home.meta.title,
+  description: home.meta.description,
 };
 
 // Runs before first paint so hero motion can start from hidden without a flash.
