@@ -4,6 +4,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { CheckIcon } from "@/components/ui/Icons";
 import { TextLink } from "@/components/ui/TextLink";
+import { SheetMotion } from "@/components/motion/SheetMotion";
 import { WeekSheet } from "./WeekSheet";
 
 export function Hero() {
@@ -27,7 +28,9 @@ export function Hero() {
           </p>
         </div>
         <div className="max-w-[760px] xl:max-w-none">
-          <WeekSheet />
+          <SheetMotion>
+            <WeekSheet />
+          </SheetMotion>
         </div>
       </div>
     </section>

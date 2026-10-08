@@ -22,6 +22,7 @@ function Tick() {
   return (
     <span
       data-sheet-tick
+      data-hero-anim
       aria-hidden="true"
       className="absolute -top-1.5 -right-1.5 grid size-[18px] place-items-center rounded-full bg-amber text-navy ring-2 ring-white"
     >
@@ -67,6 +68,7 @@ export function WeekSheet() {
                 <li
                   key={`${id}-${tag}`}
                   data-sheet-task
+                  data-hero-anim
                   className={cn(
                     "relative rounded-[10px] py-2 pr-3.5 pl-2.5 md:pr-3 md:pl-2 text-[0.8125rem] leading-tight font-semibold",
                     serviceSwatch[id].chip,

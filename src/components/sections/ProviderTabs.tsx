@@ -1,6 +1,8 @@
 "use client";
 
+import { animate, stagger } from "animejs";
 import { Tabs } from "radix-ui";
+import { useRef } from "react";
 import { home } from "@/content/site";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { Checklist } from "@/components/ui/Checklist";
@@ -12,8 +14,32 @@ import { Heading } from "@/components/ui/Heading";
  */
 export function ProviderTabs() {
   const copy = home.providers;
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Motion answers the click: the new panel's content rises in and its ticks pop.
+  function onChange() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    requestAnimationFrame(() => {
+      const panel = rootRef.current?.querySelector('[data-provider-panel][data-state="active"]');
+      if (!panel) return;
+      animate(panel.querySelectorAll("[data-panel-main] > *"), {
+        opacity: { from: 0, to: 1 },
+        y: { from: 12, to: 0 },
+        duration: 500,
+        delay: stagger(60),
+        ease: "outExpo",
+      });
+      animate(panel.querySelectorAll("li [aria-hidden=true]"), {
+        scale: { from: 0, to: 1 },
+        duration: 420,
+        delay: stagger(90, { start: 150 }),
+        ease: "outBack(2)",
+      });
+    });
+  }
+
   return (
-    <Tabs.Root defaultValue={copy.defaultTab} className="mt-10 lg:mt-12">
+    <Tabs.Root ref={rootRef} defaultValue={copy.defaultTab} onValueChange={onChange} className="mt-10 lg:mt-12">
       <Tabs.List
         aria-label={copy.eyebrow.replace(/^\d{2} \/ /, "")}
         className="-mx-[clamp(16px,4vw,40px)] flex gap-2 overflow-x-auto px-[clamp(16px,4vw,40px)] pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0"

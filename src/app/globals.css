@@ -212,12 +212,14 @@ html:not(.js) [data-provider-panel] + [data-provider-panel] {
 
 /*
  * Hero first paint (spec 10.2). The inline head script adds .js before paint, so
- * hero parts start hidden only when a script can reveal them. If the timeline never
- * runs, the fallback animation shows them after 2.5s.
+ * sheet tasks start hidden only when a script can reveal them. Until the motion code
+ * mounts and sets data-hero-ready, a fallback shows them after 2.5s in case it never does.
  */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-hero-anim] {
     opacity: 0;
+  }
+  .js:not([data-hero-ready]) [data-hero-anim] {
     animation: hero-fallback 0s linear 2.5s forwards;
   }
 }

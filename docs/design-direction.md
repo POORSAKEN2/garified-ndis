@@ -79,3 +79,21 @@ Unchanged from the tile: palette, typefaces, type scale, pill buttons, radius la
   `src/content/services.ts`; do not invent new task names or numbers.
 - Phase 7: the hero timeline is the only page-load motion. Section reveals, if any,
   stay under 600ms and never hide content without JS.
+
+## As built (Phases 4 to 7)
+
+Deliberate departures from the spec, and why:
+
+| Spec | Built | Why |
+| --- | --- | --- |
+| Hero visual: blue panel with grid texture and floating cards | Week sheet: the service tags as colour-coded tasks in a Mon–Fri grid, ticked as approved, with a legend | Shows the product promise instead of decorating. The weekday labels are the only new words |
+| Hero H1 words rise on load | H1 and copy are static; only the sheet animates | Keeps the largest text visible at first paint (LCP) and leaves one set piece |
+| Motion on service rows, testimonials, packages | None | One orchestrated moment lands better than many. Motion stays on the hero sheet, the approach track and tab changes (which answer a click) |
+| FAQ uses Radix Accordion | Native `<details name="faq">` | Radix hides closed answers in the HTML, which fails the JS-off criterion. `name` gives single-open; height animates where `interpolate-size` is supported |
+| Dialog panel animates on close | Opens only | Exit animations make Radix wait for `animationend`; a missed event leaves an invisible panel over the page |
+| Featured package: primary button | White button | The button table puts white on deep grounds; blue on deep is low contrast |
+| Accent serif on service taglines | Sans | Serif is kept for the accent words the copy marks, plus captions |
+
+Motion triggers use an IntersectionObserver (`components/motion/play-in-view.ts`) and
+play once. Testing note: headless Edge sometimes stops producing frames on idle pages,
+which looks like a stalled animation. Check motion in a real browser.
