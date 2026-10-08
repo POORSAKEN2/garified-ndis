@@ -64,6 +64,8 @@ export const home = {
     caption: ["More clarity.", BR, "More room to focus."] satisfies Rich,
     sideLabel: "Built around your business",
     indexLabel: "01 / The Garified approach",
+    // New: column labels for the hero week sheet. Plain weekday names, no claims.
+    weekDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
   },
 
   ribbon: {

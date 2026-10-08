@@ -158,18 +158,16 @@ html:not(.js) [data-site-header] {
   position: static;
 }
 
-/* Enquiry dialog: overlay fades, panel rises 12px from 0.97 (spec 10.3). */
+/*
+ * Enquiry dialog: overlay fades, panel rises 12px from 0.97 (spec 10.3). Opening only:
+ * an exit animation makes Radix wait for animationend, which can leave an invisible
+ * panel mounted over the page if the event is missed.
+ */
 .dialog-overlay[data-state="open"] {
   animation: overlay-in 220ms ease-out;
 }
-.dialog-overlay[data-state="closed"] {
-  animation: overlay-in 160ms ease-in reverse forwards;
-}
 .dialog-panel[data-state="open"] {
   animation: panel-in 380ms var(--ease-out-expo);
-}
-.dialog-panel[data-state="closed"] {
-  animation: panel-out 160ms ease-in forwards;
 }
 
 @keyframes overlay-in {
@@ -183,10 +181,32 @@ html:not(.js) [data-site-header] {
     transform: translateY(12px) scale(0.97);
   }
 }
-@keyframes panel-out {
-  to {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
+
+/* Provider tabs: all panels are in the HTML; hide inactive ones only when JS runs the tabs. */
+.js [data-provider-panel][data-state="inactive"] {
+  display: none;
+}
+html:not(.js) [role="tablist"] {
+  display: none;
+}
+html:not(.js) [data-provider-panel] + [data-provider-panel] {
+  margin-top: 1.5rem;
+}
+
+/* FAQ answers open with a height transition where the browser supports it. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 320ms var(--ease-out-expo),
+      content-visibility 320ms allow-discrete;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
   }
 }
 
