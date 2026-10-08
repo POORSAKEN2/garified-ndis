@@ -143,6 +143,22 @@
 }
 
 /*
+ * Mobile menu progressive enhancement. With JS the panel opens from the toggle.
+ * Without JS the toggle is useless, so it is hidden and the links stay visible.
+ */
+.js [data-mobile-nav]:not([data-open]) {
+  display: none;
+}
+
+html:not(.js) [data-menu-toggle] {
+  display: none;
+}
+
+html:not(.js) [data-site-header] {
+  position: static;
+}
+
+/*
  * Hero first paint (spec 10.2). The inline head script adds .js before paint, so
  * hero parts start hidden only when a script can reveal them. If the timeline never
  * runs, the fallback animation shows them after 2.5s.

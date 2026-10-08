@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { SkipLink } from "@/components/layout/SkipLink";
 import { home } from "@/content/site";
 import "./globals.css";
 
@@ -36,7 +37,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
       </head>
-      <body>{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <SkipLink />
+        {children}
+      </body>
     </html>
   );
 }

@@ -256,6 +256,17 @@ export const home = {
   },
 } as const;
 
+/**
+ * 404 page. Not on the reference site, so this is new copy (a framework error state,
+ * not a content page). Pending client review with the other new lines.
+ */
+export const notFoundPage = {
+  meta: { title: "Page not found | Garified" },
+  title: "We can’t find that page.",
+  text: "The link may be out of date or mistyped. Choose a service below, or go back to the home page.",
+  home: "Go to the home page",
+} as const;
+
 export const footer = {
   home: {
     tagline: ["Business support for the", BR, "people delivering better care."] satisfies Rich,

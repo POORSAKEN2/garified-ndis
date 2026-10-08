@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { BR } from "@/content/types";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -15,8 +16,8 @@ export default function Styleguide() {
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
-    <main id="main">
-      <Section>
+    <SiteShell variant="home">
+      <Section data-cta-hide>
         <Eyebrow>NDIS provider business support</Eyebrow>
         <Heading
           as="h1"
@@ -76,6 +77,7 @@ export default function Styleguide() {
       </Section>
 
       <Section ground="deep" id="approach">
+        <div id="contact" data-cta-hide />
         <Eyebrow>02 / A practical partnership</Eyebrow>
         <Heading
           className="mt-4"
@@ -91,6 +93,6 @@ export default function Styleguide() {
           </TextLink>
         </div>
       </Section>
-    </main>
+    </SiteShell>
   );
 }
