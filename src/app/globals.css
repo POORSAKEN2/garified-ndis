@@ -1,1 +1,161 @@
 @import "tailwindcss";
+
+/* Brand palette only. Default Tailwind colours are cleared so nothing off-palette slips in. */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-navy: #0b1f3a;
+  --color-blue: #1d4ed8;
+  --color-blue-hover: #1e40af;
+  --color-deep: #0f2a4f;
+  --color-deep-2: #16375f;
+  --color-tint: #eef4fb;
+  --color-muted: #4b5768;
+  --color-on-deep: #b9c7db;
+  --color-line: #dce3ec;
+  --color-amber: #f2a93b;
+  --color-error: #b42318;
+
+  /* Fluid type scale (spec 6.2). Phone value at 360px, desktop value from ~1280px. */
+  --text-display: clamp(2.625rem, 1.6rem + 4.4vw, 5.25rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-h2: clamp(2.125rem, 1.5rem + 2.6vw, 3.25rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.028em;
+  --text-h3: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--letter-spacing: -0.022em;
+  --text-h4: 1.375rem;
+  --text-h4--line-height: 1.25;
+  --text-h4--letter-spacing: -0.015em;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --text-lead--line-height: 1.55;
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+
+  --radius-pill: 999px;
+  --radius-card: 14px;
+  --radius-panel: 20px;
+  --radius-hero: 24px;
+
+  --shadow-raised: 0 1px 2px rgb(11 31 58 / 0.06), 0 12px 32px -12px rgb(11 31 58 / 0.18);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, "Times New Roman", serif;
+}
+
+@utility container-site {
+  width: min(100% - 2 * clamp(16px, 4vw, 40px), 1200px);
+  margin-inline: auto;
+}
+
+@utility py-section {
+  padding-block: clamp(56px, 7vw, 112px);
+}
+
+@utility measure {
+  max-width: 54ch;
+}
+
+@layer base {
+  html {
+    /* Clears the sticky header when jumping to an anchor. */
+    scroll-padding-top: 96px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-white);
+    color: var(--color-navy);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  /* Accent words from the copy. Instrument Serif sits small, so it is scaled up to meet the sans x-height. */
+  :where(h1, h2, h3, h4, .accent) em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.1em;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--color-blue);
+  }
+
+  .on-deep :where(h1, h2, h3, h4, .accent) em {
+    color: var(--color-amber);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 3px;
+  }
+
+  .on-deep :focus-visible {
+    outline-color: var(--color-amber);
+  }
+
+  ::selection {
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/*
+ * Hero first paint (spec 10.2). The inline head script adds .js before paint, so
+ * hero parts start hidden only when a script can reveal them. If the timeline never
+ * runs, the fallback animation shows them after 2.5s.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-hero-anim] {
+    opacity: 0;
+    animation: hero-fallback 0s linear 2.5s forwards;
+  }
+}
+
+@keyframes hero-fallback {
+  to {
+    opacity: 1;
+  }
+}

@@ -1,5 +1,21 @@
 import type { Metadata } from "next";
+import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+  display: "swap",
+  variable: "--font-instrument",
+});
 
 export const metadata: Metadata = {
   title: "Garified | Business support for NDIS providers",
@@ -7,9 +23,19 @@ export const metadata: Metadata = {
     "Rostering, administration, marketing and accounting support, thoughtfully organised around your Australian NDIS provider business.",
 };
 
+// Runs before first paint so hero motion can start from hidden without a flash.
+const jsFlag = "document.documentElement.classList.add('js')";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-AU">
+    <html
+      lang="en-AU"
+      className={`${jakarta.variable} ${instrument.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
+      </head>
       <body>{children}</body>
     </html>
   );
