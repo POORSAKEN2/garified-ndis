@@ -158,6 +158,38 @@ html:not(.js) [data-site-header] {
   position: static;
 }
 
+/* Enquiry dialog: overlay fades, panel rises 12px from 0.97 (spec 10.3). */
+.dialog-overlay[data-state="open"] {
+  animation: overlay-in 220ms ease-out;
+}
+.dialog-overlay[data-state="closed"] {
+  animation: overlay-in 160ms ease-in reverse forwards;
+}
+.dialog-panel[data-state="open"] {
+  animation: panel-in 380ms var(--ease-out-expo);
+}
+.dialog-panel[data-state="closed"] {
+  animation: panel-out 160ms ease-in forwards;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+@keyframes panel-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
 /*
  * Hero first paint (spec 10.2). The inline head script adds .js before paint, so
  * hero parts start hidden only when a script can reveal them. If the timeline never

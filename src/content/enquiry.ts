@@ -50,6 +50,17 @@ export const enquiry = {
   },
   error: "We couldn’t send your enquiry. Please check your connection and try again.",
 
+  // New copy, not on the reference site: field errors and the dialog's close label.
+  fieldErrors: {
+    business: "Enter your business name.",
+    name: "Enter your first and last name.",
+    email: "Enter a business email address, like you@yourbusiness.com.au.",
+    tooLong: "This is too long. Shorten it and try again.",
+    summary: "Check the highlighted fields.",
+  },
+  close: "Close",
+  sending: "Sending…",
+
   // 1:1 with the reference result state.
   copy: "Copy brief",
   copied: "Copied",
@@ -67,8 +78,8 @@ export const enquiry = {
     },
     noServices: "Help choosing the right starting point",
     noPriorities: "To discuss in a workflow review.",
-    // 1:1 per spec 5.2.2, but "has not been sent" is untrue once the brief is emailed.
-    // Raise with the client alongside the dialog wording (spec 15.1).
+    // Reference closing line, kept for the record but not used: "has not been sent" is
+    // untrue once the brief is emailed. Raise with the client alongside spec 15.1.
     footer: "Prepared for a Garified workflow conversation. This brief has not been sent.",
   },
 } as const;

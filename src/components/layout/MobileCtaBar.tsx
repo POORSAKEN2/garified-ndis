@@ -2,16 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
-import { ButtonLink } from "@/components/ui/Button";
+import type { ServiceId } from "@/content/types";
+import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
+import { useEnquiry } from "@/components/enquiry/EnquiryProvider";
 import { cn } from "@/lib/cn";
 
 /**
  * Fixed "Let’s talk" bar on phones (below `md`). It stays out of the way while any
  * element marked `data-cta-hide` is on screen: the hero and contact section on the
- * home page, the intro on service pages. Phase 4 also hides it while the dialog is open.
+ * home page, the intro on service pages. It also hides while the dialog is open.
  */
-export function MobileCtaBar({ href }: { href: string }) {
-  const [visible, setVisible] = useState(false);
+export function MobileCtaBar({ preselect }: { preselect?: readonly ServiceId[] }) {
+  const [clear, setClear] = useState(false);
+  const { isOpen } = useEnquiry();
+  const visible = clear && !isOpen;
 
   useEffect(() => {
     const targets = document.querySelectorAll("[data-cta-hide]");
@@ -21,7 +25,7 @@ export function MobileCtaBar({ href }: { href: string }) {
         if (entry.isIntersecting) onScreen.add(entry.target);
         else onScreen.delete(entry.target);
       }
-      setVisible(onScreen.size === 0);
+      setClear(onScreen.size === 0);
     });
     targets.forEach((t) => observer.observe(t));
     return () => observer.disconnect();
@@ -40,9 +44,9 @@ export function MobileCtaBar({ href }: { href: string }) {
         )}
       >
         <div className="container-site">
-          <ButtonLink href={href} className="w-full">
+          <EnquiryTrigger preselect={preselect} className="w-full">
             {site.letsTalk}
-          </ButtonLink>
+          </EnquiryTrigger>
         </div>
       </div>
       {/* Keeps the end of the page clear of the fixed bar. */}

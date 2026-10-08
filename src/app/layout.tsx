@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { EnquiryProvider } from "@/components/enquiry/EnquiryProvider";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { home } from "@/content/site";
 import "./globals.css";
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
-        {children}
+        <EnquiryProvider>{children}</EnquiryProvider>
       </body>
     </html>
   );

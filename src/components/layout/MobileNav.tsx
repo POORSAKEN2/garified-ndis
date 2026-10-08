@@ -3,7 +3,7 @@
 import { Menu, X } from "lucide-react";
 import { useEffect } from "react";
 import { site } from "@/content/site";
-import { ButtonLink } from "@/components/ui/Button";
+import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { cn } from "@/lib/cn";
 
 export const MOBILE_NAV_ID = "mobile-nav";
@@ -39,14 +39,13 @@ export function MobileNavToggle({ open, onToggle, className }: ToggleProps) {
 type PanelProps = {
   open: boolean;
   onClose: (opts?: { restoreFocus?: boolean }) => void;
-  contactHref: string;
 };
 
 /**
  * Disclosure panel below the header bar, under `lg` only. Closes on Escape, on a link
  * tap, and when the viewport grows to the desktop layout.
  */
-export function MobileNavPanel({ open, onClose, contactHref }: PanelProps) {
+export function MobileNavPanel({ open, onClose }: PanelProps) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -84,9 +83,9 @@ export function MobileNavPanel({ open, onClose, contactHref }: PanelProps) {
             </li>
           ))}
         </ul>
-        <ButtonLink href={contactHref} className="mt-5 w-full" onClick={() => onClose()}>
+        <EnquiryTrigger className="mt-5 w-full" onBeforeOpen={() => onClose()}>
           {site.letsTalk}
-        </ButtonLink>
+        </EnquiryTrigger>
       </div>
     </nav>
   );

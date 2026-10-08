@@ -2,7 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 import { site } from "@/content/site";
-import { ButtonLink } from "@/components/ui/Button";
+import type { ServiceId } from "@/content/types";
+import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { cn } from "@/lib/cn";
 import { MobileNavPanel, MobileNavToggle } from "./MobileNav";
 import { useScrolled } from "./use-scrolled";
@@ -14,13 +15,18 @@ export type HeaderVariant = "home" | "service";
  * Sticky header. The home variant has the section links and a mobile menu; service
  * pages and the 404 show only the wordmark and Let’s talk, as on the reference site.
  */
-export function SiteHeader({ variant }: { variant: HeaderVariant }) {
+export function SiteHeader({
+  variant,
+  preselect,
+}: {
+  variant: HeaderVariant;
+  /** Services ticked when Let’s talk opens the dialog, for example on a service page. */
+  preselect?: readonly ServiceId[];
+}) {
   const scrolled = useScrolled(8);
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLDivElement>(null);
   const isHome = variant === "home";
-  // Phase 4 swaps these links for the enquiry dialog trigger.
-  const contactHref = isHome ? "#contact" : "/#contact";
 
   const close = useCallback((opts?: { restoreFocus?: boolean }) => {
     setOpen(false);
@@ -62,13 +68,13 @@ export function SiteHeader({ variant }: { variant: HeaderVariant }) {
         )}
 
         <div className={cn("flex items-center gap-3", isHome ? "ml-auto lg:ml-4" : "ml-auto")}>
-          <ButtonLink
-            href={contactHref}
+          <EnquiryTrigger
             size="sm"
+            preselect={preselect}
             className={isHome ? "hidden sm:inline-flex" : undefined}
           >
             {site.letsTalk}
-          </ButtonLink>
+          </EnquiryTrigger>
           {isHome && (
             <div ref={toggleRef} className="lg:hidden">
               <MobileNavToggle open={open} onToggle={() => setOpen((v) => !v)} />
@@ -77,7 +83,7 @@ export function SiteHeader({ variant }: { variant: HeaderVariant }) {
         </div>
       </div>
 
-      {isHome && <MobileNavPanel open={open} onClose={close} contactHref={contactHref} />}
+      {isHome && <MobileNavPanel open={open} onClose={close} />}
     </header>
   );
 }
