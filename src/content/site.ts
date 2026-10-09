@@ -117,7 +117,6 @@ export const home = {
     title: ["Support that understands", BR, { em: "your kind of business." }] satisfies Rich,
     cta: "Find the right support",
     sideEyebrow: "Where we can help",
-    defaultTab: "in-home",
     tabs: [
       {
         id: "in-home",

@@ -93,6 +93,7 @@ Deliberate departures from the spec, and why:
 | Dialog panel animates on close | Opens only | Exit animations make Radix wait for `animationend`; a missed event leaves an invisible panel over the page |
 | Featured package: primary button | White button | The button table puts white on deep grounds; blue on deep is low contrast |
 | Accent serif on service taglines | Sans | Serif is kept for the accent words the copy marks, plus captions |
+| Who we help: Radix Tabs, one panel at a time | Three open columns, each a photo with the provider's name tagged on its corner (deep tag, amber top edge, like the ribbon), then scope as a serif caption, promise, ruled checklist and an outline button. Columns share a subgrid from `lg` so the rows line up | Every visitor finds their kind of business without a click, and all copy shows with JS off. No box around the columns, so it does not echo the bordered package cards that follow. "Where we can help" stays as a screen-reader label for each list |
 
 Motion triggers use an IntersectionObserver (`components/motion/play-in-view.ts`) and
 play once. Testing note: headless Edge sometimes stops producing frames on idle pages,

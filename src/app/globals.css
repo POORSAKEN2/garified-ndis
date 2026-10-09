@@ -182,17 +182,6 @@ html:not(.js) [data-site-header] {
   }
 }
 
-/* Provider tabs: all panels are in the HTML; hide inactive ones only when JS runs the tabs. */
-.js [data-provider-panel][data-state="inactive"] {
-  display: none;
-}
-html:not(.js) [role="tablist"] {
-  display: none;
-}
-html:not(.js) [data-provider-panel] + [data-provider-panel] {
-  margin-top: 1.5rem;
-}
-
 /* FAQ answers open with a height transition where the browser supports it. */
 @supports (interpolate-size: allow-keywords) {
   :root {
