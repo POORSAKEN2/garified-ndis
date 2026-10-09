@@ -27,15 +27,14 @@ export function ServiceList() {
             <li
               key={service.id}
               data-service-row
-              // One column on phones; from `lg` the number, title, summary and link sit on a shared baseline.
-              className="group relative grid border-b border-line py-7 lg:grid-cols-[2.5rem_minmax(0,0.85fr)_minmax(0,1.25fr)_auto] lg:items-baseline lg:gap-x-10 lg:py-9"
+              // One column on phones; from `lg` the title, summary and link sit on a shared baseline.
+              className="group relative grid border-b border-line py-7 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)_auto] lg:items-baseline lg:gap-x-10 lg:py-9"
             >
               {/* Blue rule that draws across the row on hover or keyboard focus. */}
               <span
                 aria-hidden="true"
                 className="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-blue transition-transform duration-500 ease-out-expo group-focus-within:scale-x-100 group-hover:scale-x-100"
               />
-              <span className="mb-2 text-small font-semibold text-muted tabular-nums lg:mb-0">{service.number}</span>
               <div>
                 <h3 className="text-h4 font-bold lg:text-[1.75rem]">
                   {/* Inline rather than flex, so the heading keeps a text baseline for the row to align on. */}
