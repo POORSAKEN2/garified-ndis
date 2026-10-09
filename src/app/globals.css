@@ -231,23 +231,36 @@ html:not(.js) [data-provider-panel] + [data-provider-panel] {
 }
 
 /*
- * Zoom reveal (ZoomMotion). The tall scroll track (200svh, 240svh from md, so the copy
+ * Zoom reveal (ZoomMotion). The tall scroll track (220svh, 260svh from md, so the copy
  * gets its own stretch of scroll) and the starting state exist only when the motion code
  * can run, so without JS or under reduced motion the section is a plain full-width photo
- * with the copy already on it. ZoomMotion moves two variables from 0 to 1: --reveal opens
+ * with the ribbon already on it. ZoomMotion moves two variables from 0 to 1: --reveal opens
  * the frame from the container's width (bottom pulled up 18%, hero corners) to the full
  * stage, its top edge staying put so it peeks under the hero, and --zoom settles the
- * photo from 1.25 to 1. The copy and its gradient start hidden and are faded in directly.
+ * photo from 1.25 to 1. The ribbon band starts below the frame's edge (the frame clips
+ * it), its rules and dividers undrawn (--draw scales them), its title and items below
+ * their clips and its ticks hidden.
  */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-zoom-reveal] {
     --reveal: 0;
     --zoom: 0;
-    height: 200svh;
+    height: 220svh;
   }
-  .js [data-zoom-copy],
-  .js [data-zoom-line] {
+  .js [data-ribbon-tick] {
     opacity: 0;
+  }
+  .js [data-ribbon-band] {
+    transform: translateY(100%);
+  }
+  .js [data-ribbon-title],
+  .js [data-ribbon-text] {
+    transform: translateY(115%);
+  }
+  .js [data-ribbon-rule],
+  .js [data-ribbon-head],
+  .js [data-ribbon-divider] {
+    --draw: 0;
   }
   .js [data-zoom-frame] {
     --rest: calc(1 - var(--reveal));
@@ -262,7 +275,7 @@ html:not(.js) [data-provider-panel] + [data-provider-panel] {
 
   @media (min-width: 48rem) {
     .js [data-zoom-reveal] {
-      height: 240svh;
+      height: 260svh;
     }
   }
 }
