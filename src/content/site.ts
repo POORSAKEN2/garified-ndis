@@ -53,7 +53,7 @@ export const home = {
 
   hero: {
     eyebrow: "NDIS provider business support",
-    title: ["The business", BR, "behind", BR, { em: "better care." }] satisfies Rich,
+    title: ["The business behind", BR, { em: "better care." }] satisfies Rich,
     text: "Rostering, administration, marketing and accounting support. Thoughtfully organised around your NDIS business.",
     primary: "Find your support",
     secondary: { label: "Explore our services", href: "#services" },

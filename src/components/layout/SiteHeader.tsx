@@ -43,7 +43,7 @@ export function SiteHeader({
           : "border-transparent",
       )}
     >
-      <div className="container-site flex min-h-[72px] items-center gap-6 lg:min-h-20">
+      <div className="flex min-h-[72px] px-[clamp(16px,2.5vw,32px)] items-center gap-6 lg:min-h-20">
         <Wordmark />
 
         {isHome && (
