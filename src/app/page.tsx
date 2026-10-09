@@ -5,7 +5,6 @@ import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { Packages } from "@/components/sections/Packages";
 import { ServiceList } from "@/components/sections/ServiceList";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { WhoWeHelp } from "@/components/sections/WhoWeHelp";
 import { ZoomReveal } from "@/components/sections/ZoomReveal";
 
@@ -16,7 +15,6 @@ export default function Home() {
       <ZoomReveal />
       <ServiceList />
       <Approach />
-      <Testimonials />
       <WhoWeHelp />
       <Packages />
       <Faq />

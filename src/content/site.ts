@@ -111,14 +111,6 @@ export const home = {
     ],
   },
 
-  // New section, approved exception to 1:1 copy (spec 5.2.1).
-  testimonials: {
-    id: "testimonials",
-    eyebrow: "What providers say",
-    title: ["Trusted by the teams ", { em: "behind the care." }] satisfies Rich,
-    sampleTag: "Sample",
-  },
-
   providers: {
     id: "providers",
     eyebrow: "03 / Who we help",
