@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { home } from "@/content/site";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
@@ -42,8 +43,13 @@ export function WhoWeHelp() {
                     alt={photo.alt}
                     placeholder="blur"
                     sizes="(min-width: 1024px) 380px, (min-width: 768px) 42vw, 100vw"
-                    className="col-start-1 row-start-1 size-full object-cover"
-                    style={photo.focus ? { objectPosition: photo.focus } : undefined}
+                    className="col-start-1 row-start-1 size-full object-cover [object-position:var(--focus)] md:max-lg:[object-position:var(--focus-tablet)]"
+                    style={
+                      {
+                        "--focus": photo.focus ?? "center",
+                        "--focus-tablet": photo.focusTablet ?? photo.focus ?? "center",
+                      } as CSSProperties
+                    }
                   />
                 ) : (
                   <div
