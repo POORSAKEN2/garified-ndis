@@ -303,3 +303,28 @@ html:not(.js) [data-mobile-nav] {
     }
   }
 }
+
+/*
+ * Footer logo. The full logo rises out of the clip line at its own bottom edge while it
+ * scrolls into view, and lands as the page ends. Scroll-linked, so it follows the reader
+ * rather than playing on its own, and needs no JS. Where scroll timelines are missing
+ * or motion is reduced, the logo simply sits in place.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-footer-logo] {
+      view-timeline: --footer-logo block;
+    }
+    [data-footer-logo] > svg {
+      animation: footer-logo-rise linear both;
+      animation-timeline: --footer-logo;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes footer-logo-rise {
+  from {
+    translate: 0 70%;
+  }
+}

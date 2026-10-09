@@ -10,7 +10,8 @@ import { cn } from "@/lib/cn";
 /**
  * Fixed "Let’s talk" bar on phones (below `md`). It stays out of the way while any
  * element marked `data-cta-hide` is on screen: the hero and contact section on the
- * home page, the intro on service pages. It also hides while the dialog is open.
+ * home page, the intro on service pages, and the footer everywhere, which is why the
+ * end of the page needs no spacer. It also hides while the dialog is open.
  */
 export function MobileCtaBar({ preselect }: { preselect?: readonly ServiceId[] }) {
   const [clear, setClear] = useState(false);
@@ -32,25 +33,21 @@ export function MobileCtaBar({ preselect }: { preselect?: readonly ServiceId[] }
   }, []);
 
   return (
-    <>
-      <div
-        inert={!visible}
-        aria-hidden={!visible}
-        className={cn(
-          "fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white md:hidden",
-          "pb-[max(12px,env(safe-area-inset-bottom))] pt-3",
-          "transition-[translate,opacity] duration-300 ease-out-expo",
-          visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
-        )}
-      >
-        <div className="container-site">
-          <EnquiryTrigger preselect={preselect} className="w-full">
-            {site.letsTalk}
-          </EnquiryTrigger>
-        </div>
+    <div
+      inert={!visible}
+      aria-hidden={!visible}
+      className={cn(
+        "fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white md:hidden",
+        "pb-[max(12px,env(safe-area-inset-bottom))] pt-3",
+        "transition-[translate,opacity] duration-300 ease-out-expo",
+        visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
+      )}
+    >
+      <div className="container-site">
+        <EnquiryTrigger preselect={preselect} className="w-full">
+          {site.letsTalk}
+        </EnquiryTrigger>
       </div>
-      {/* Keeps the end of the page clear of the fixed bar. */}
-      <div aria-hidden="true" className="h-[84px] bg-navy md:hidden" />
-    </>
+    </div>
   );
 }

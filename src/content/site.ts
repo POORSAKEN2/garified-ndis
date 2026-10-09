@@ -7,7 +7,6 @@ import { BR, type Rich, type ServiceId } from "./types";
 
 export const site = {
   name: "Garified",
-  wordmark: "garified",
   wordmarkLabel: "Garified home",
   skipLink: "Skip to content",
   letsTalk: "Let’s talk",
@@ -260,21 +259,31 @@ export const notFoundPage = {
   home: "Go to the home page",
 } as const;
 
+/**
+ * Footer copy. The one deliberate exception to the 1:1 rule: rewritten for the
+ * large-type footer at the owner's request (2026-10-09). The statement closes the page
+ * on the hero's note; the rest reuses words from the copy above it.
+ */
 export const footer = {
-  home: {
-    tagline: ["Business support for the", BR, "people delivering better care."] satisfies Rich,
-    navLabel: "Footer navigation",
-    links: [
-      { label: "Services", href: "#services" },
-      { label: "Our approach", href: "#approach" },
-      { label: "Let’s talk", href: "#contact" },
-    ],
-    /** "{year}" is replaced with the current year. */
-    copyright: "© {year} Garified",
-    servicesLine: "Rostering · Administration · Marketing · Accounting support",
-    region: "Supporting Australian NDIS businesses",
+  statement: ["Your care team leads.", BR, "We support the ", { em: "business behind it." }] satisfies Rich,
+  cta: {
+    text: "Start with the workflow taking the most time.",
+    label: "Let’s talk",
   },
-  service: {
-    tagline: "Business support for Australian NDIS providers.",
-  },
+  blurb:
+    "Rostering, administration, marketing and accounting support for Australian NDIS providers, organised around your approved processes.",
+  servicesLabel: "Services",
+  exploreLabel: "Explore",
+  /** Home page sections, by id. */
+  explore: [
+    { label: "Our approach", id: "approach" },
+    { label: "Who we help", id: "providers" },
+    { label: "Packages", id: "packages" },
+    { label: "Questions", id: "faq" },
+  ],
+  /** "{year}" is replaced with the current year. */
+  copyright: "© {year} Garified Solutions",
+  region: "Supporting Australian NDIS businesses",
+  backToTop: "Back to top",
+  logoLabel: "Garified Solutions",
 } as const;

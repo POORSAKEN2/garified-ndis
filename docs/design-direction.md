@@ -22,10 +22,10 @@ provider approves. Not sunlit offices, gradient glows or floating dashboard card
 
 | Name | Hex | Role |
 | --- | --- | --- |
-| Navy | #0B1F3A | Ink, footer ground |
+| Navy | #0B1F3A | Ink |
 | Blue | #1D4ED8 | Every action, accent words on light |
 | Deep | #0F2A4F | Dark bands |
-| Tint | #EEF4FB | Alternate ground |
+| Tint | #EEF4FB | Alternate ground, footer ground |
 | Amber | #F2A93B | Ticks, wordmark dot, accents on deep only |
 | Line | #DCE3EC | Rules and borders |
 
@@ -94,6 +94,7 @@ Deliberate departures from the spec, and why:
 | Featured package: primary button | White button | The button table puts white on deep grounds; blue on deep is low contrast |
 | Accent serif on service taglines | Sans | Serif is kept for the accent words the copy marks, plus captions |
 | Who we help: Radix Tabs, one panel at a time | Three open columns, each a photo with the provider's name tagged on its corner (deep tag, amber top edge, like the ribbon), then scope as a serif caption, promise, ruled checklist and an outline button. Columns share a subgrid from `lg` so the rows line up | Every visitor finds their kind of business without a click, and all copy shows with JS off. No box around the columns, so it does not echo the bordered package cards that follow. "Where we can help" stays as a screen-reader label for each list |
+| Footer: navy, wordmark, tagline and three links, copy 1:1 | Large-type footer on tint, the same on every page: the closing statement ("Your care team leads. We support the *business behind it.*") beside a Let’s talk button, a blurb with Services (the four service pages) and Explore (home sections) links, a bottom bar, then the full logo spanning the container. The logo is a vector trace of the PNG (`LogoSvg`) and rises out of a clip line as the page ends, via a CSS scroll timeline | The owner asked for a large-type footer with the logo scaled up, and for the footer copy to be rewritten (the one exception to the 1:1 rule). Tint, not navy, because the logo's blue is about 2:1 on navy and the logo keeps its own colours. The rise is scroll-linked, needs no JS and sits still where unsupported or under reduced motion |
 
 Motion triggers use an IntersectionObserver (`components/motion/play-in-view.ts`) and
 play once. Testing note: headless Edge sometimes stops producing frames on idle pages,
