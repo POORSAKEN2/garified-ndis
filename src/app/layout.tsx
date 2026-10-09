@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { EnquiryProvider } from "@/components/enquiry/EnquiryProvider";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { home } from "@/content/site";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -33,6 +35,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en-AU"
       className={`${jakarta.variable} ${instrument.variable}`}
+      // Route changes jump to the top instead of gliding there from the old position.
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
@@ -40,7 +44,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
-        <EnquiryProvider>{children}</EnquiryProvider>
+        <EnquiryProvider>
+          <SmoothScroll />
+          {children}
+        </EnquiryProvider>
       </body>
     </html>
   );

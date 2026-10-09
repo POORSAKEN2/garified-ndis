@@ -29,6 +29,8 @@ export function EnquiryDialog({ open, onOpenChange, preselect, onCloseFocus }: E
             e.preventDefault();
             onCloseFocus();
           }}
+          // Keeps wheel events native inside the panel while page smooth scrolling is paused.
+          data-lenis-prevent
           className={
             "dialog-panel fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-white " +
             "sm:inset-auto sm:top-1/2 sm:left-1/2 sm:max-h-[calc(100dvh-48px)] sm:w-[min(640px,calc(100vw-48px))] " +
