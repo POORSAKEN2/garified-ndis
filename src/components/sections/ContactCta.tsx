@@ -1,12 +1,23 @@
 import { home } from "@/content/site";
+import type { Rich, ServiceId } from "@/content/types";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { RichText } from "@/components/ui/RichText";
 
-/** The closing call to action. The only centred block on the page. */
-export function ContactCta() {
-  const copy = home.contact;
+type ContactCopy = { id: string; eyebrow: string; title: Rich; text: Rich | string; cta: string };
+
+/**
+ * The closing call to action. The only centred block on the page. The home copy by
+ * default; service pages pass their own and tick their service in the dialog.
+ */
+export function ContactCta({
+  copy = home.contact,
+  preselect,
+}: {
+  copy?: ContactCopy;
+  preselect?: readonly ServiceId[];
+}) {
   return (
     <section
       id={copy.id}
@@ -20,7 +31,7 @@ export function ContactCta() {
         <p className="mt-7 max-w-[44ch] text-lead text-on-deep">
           <RichText content={copy.text} />
         </p>
-        <EnquiryTrigger variant="white" className="mt-10 w-full sm:w-auto">
+        <EnquiryTrigger variant="white" preselect={preselect} className="mt-10 w-full sm:w-auto">
           {copy.cta}
         </EnquiryTrigger>
       </div>

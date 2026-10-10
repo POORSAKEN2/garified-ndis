@@ -1,14 +1,15 @@
 import { Plus } from "lucide-react";
 import { home } from "@/content/site";
+import type { FaqCopy } from "@/content/types";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 
 /**
  * Native <details> with a shared `name`, so only one answer is open at a time. It works
  * without JavaScript, which Radix Accordion does not (it hides closed answers in the HTML).
+ * The home questions by default; service pages pass their own.
  */
-export function Faq() {
-  const copy = home.faq;
+export function Faq({ copy = home.faq }: { copy?: FaqCopy }) {
   return (
     <Section id={copy.id} aria-labelledby="faq-title">
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">

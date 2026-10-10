@@ -12,9 +12,14 @@ describe("copy punctuation", () => {
   });
 
   it("uses straight apostrophes in team's, provider's and home's", () => {
-    expect(services[0].page.intro).toContain("team's decision");
+    expect(services[0].detail.hero.panel.title).toContain("team's approval");
     expect(services[3].page.intro).toContain("provider's accountant");
     expect(home.providers.tabs[1].accent).toBe("Scoped around each home's requirements");
+  });
+
+  it("keeps the reference's one curly apostrophe in team’s time", () => {
+    expect(services[1].detail.included.intro).toContain("team’s time");
+    expect(services[1].detail.included.items[2].text).toContain("team's review");
   });
 
   it("uses en dashes in team sizes", () => {
@@ -25,12 +30,12 @@ describe("copy punctuation", () => {
 describe("services", () => {
   it("numbers the four services in order", () => {
     expect(services.map((s) => s.number)).toEqual(["01", "02", "03", "04"]);
-    expect(services.map((s) => s.page.eyebrow)).toEqual([
-      "01 / Garified services",
-      "02 / Garified services",
-      "03 / Garified services",
-      "04 / Garified services",
+    expect([services[0], services[1], services[2]].map((s) => s.detail.included.eyebrow)).toEqual([
+      "01 / Your rostering support",
+      "01 / Your administration support",
+      "01 / Your marketing support",
     ]);
+    expect(services[3].page.eyebrow).toBe("04 / Garified services");
   });
 
   it("builds headings and aria labels from the title", () => {
@@ -38,8 +43,18 @@ describe("services", () => {
     expect(exploreLabel(services[3])).toBe("Explore accounting support");
   });
 
-  it("has five checklist items per service page", () => {
-    expect(services.every((s) => s.page.items.length === 5)).toBe(true);
+  it("matches the reference's item counts on each full service page", () => {
+    for (const s of [services[0], services[1], services[2]]) {
+      expect(s.detail.included.items).toHaveLength(6);
+      expect(s.detail.handover.prepares).toHaveLength(5);
+      expect(s.detail.handover.control).toHaveLength(4);
+      expect(s.detail.process.steps).toHaveLength(3);
+      expect(s.detail.faq.items).toHaveLength(4);
+    }
+  });
+
+  it("has five checklist items on the legacy accounting page", () => {
+    expect(services[3].page.items).toHaveLength(5);
   });
 });
 
