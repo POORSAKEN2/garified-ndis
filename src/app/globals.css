@@ -16,23 +16,35 @@
   --color-amber: #f2a93b;
   --color-error: #b42318;
 
-  /* Fluid type scale (spec 6.2). Phone value at 360px, desktop value from ~1280px. */
+  /* Fluid type scale (spec 6.2). Phone value at 360px; every fluid step reaches its desktop
+     value at 1200px, except display, which keeps growing to ~1330px. Desktop runs
+     15 / 18 / 21 / 22 / 28 / 36 / 52 / 84, plus 16 for buttons and nav. Default Tailwind
+     sizes are cleared so nothing off-scale slips in. */
+  --text-*: initial;
   --text-display: clamp(2.625rem, 1.6rem + 4.4vw, 5.25rem);
   --text-display--line-height: 1.02;
   --text-display--letter-spacing: -0.035em;
-  --text-h2: clamp(2.125rem, 1.5rem + 2.6vw, 3.25rem);
+  --text-h2: clamp(2.125rem, 1.643rem + 2.143vw, 3.25rem);
   --text-h2--line-height: 1.08;
   --text-h2--letter-spacing: -0.028em;
-  --text-h3: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h3: clamp(1.625rem, 1.357rem + 1.19vw, 2.25rem);
   --text-h3--line-height: 1.1;
   --text-h3--letter-spacing: -0.022em;
-  --text-h4: 1.375rem;
+  /* Item titles: service rows, approach steps. */
+  --text-h4: clamp(1.375rem, 1.214rem + 0.714vw, 1.75rem);
   --text-h4--line-height: 1.25;
   --text-h4--letter-spacing: -0.015em;
-  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  /* Titles that sit in a list or column: FAQ questions, who-we-help columns. */
+  --text-h5: clamp(1.25rem, 1.196rem + 0.238vw, 1.375rem);
+  --text-h5--line-height: 1.3;
+  --text-h5--letter-spacing: -0.015em;
+  --text-lead: clamp(1.25rem, 1.223rem + 0.119vw, 1.3125rem);
   --text-lead--line-height: 1.55;
   --text-body: 1.125rem;
   --text-body--line-height: 1.6;
+  /* Buttons and nav links. */
+  --text-ui: 1rem;
+  --text-ui--line-height: 1.5;
   --text-small: 0.9375rem;
   --text-small--line-height: 1.5;
 

@@ -13,8 +13,8 @@ const variants = {
 } as const;
 
 const sizes = {
-  md: "min-h-[52px] px-6 text-base",
-  sm: "min-h-11 px-[18px] text-[0.9375rem]",
+  md: "min-h-[52px] px-6 text-ui",
+  sm: "min-h-11 px-[18px] text-small",
 } as const;
 
 export type ButtonVariant = keyof typeof variants;

@@ -23,7 +23,7 @@ export function Faq() {
           {copy.items.map((item) => (
             <details key={item.q} name="faq" className="faq-item group border-b border-line">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
-                <h3 className="text-h4 font-semibold">{item.q}</h3>
+                <h3 className="text-h5 font-semibold">{item.q}</h3>
                 <span
                   aria-hidden="true"
                   className="grid size-9 flex-none place-items-center rounded-full border-[1.5px] border-line text-blue transition-colors group-open:border-blue group-open:bg-blue group-open:text-white"

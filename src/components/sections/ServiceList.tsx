@@ -36,7 +36,7 @@ export function ServiceList() {
                 className="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-blue transition-transform duration-500 ease-out-expo group-focus-within:scale-x-100 group-hover:scale-x-100"
               />
               <div>
-                <h3 className="text-h4 font-bold lg:text-[1.75rem]">
+                <h3 className="text-h4 font-bold">
                   {/* Inline rather than flex, so the heading keeps a text baseline for the row to align on. */}
                   <Icon
                     aria-hidden="true"
@@ -45,7 +45,7 @@ export function ServiceList() {
                   />
                   {service.title}
                 </h3>
-                <p className="mt-1.5 font-medium text-navy/80">{service.tagline}</p>
+                <p className="mt-1.5 text-lead font-medium text-navy/80">{service.tagline}</p>
               </div>
               <div className="mt-4 lg:mt-0">
                 <p className="measure text-muted">{service.summary}</p>
@@ -53,7 +53,7 @@ export function ServiceList() {
                   {service.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="inline-flex items-center gap-1.5 rounded-pill border border-line bg-white px-2.5 py-1 text-[0.8125rem] font-semibold"
+                      className="inline-flex items-center gap-1.5 rounded-pill border border-line bg-white px-3 py-1.5 text-small font-semibold"
                     >
                       <span aria-hidden="true" className={cn("size-1.5 rounded-full", serviceSwatch[service.id].dot)} />
                       {tag}

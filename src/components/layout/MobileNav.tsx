@@ -91,7 +91,7 @@ export function MobileNavPanel({ open, active, onClose }: PanelProps) {
                   onClick={() => onClose()}
                   aria-current={current ? "true" : undefined}
                   className={cn(
-                    "flex min-h-[52px] items-center text-lg font-semibold hover:text-blue",
+                    "flex min-h-[52px] items-center text-body font-semibold hover:text-blue",
                     current ? "text-blue" : "text-navy",
                   )}
                 >

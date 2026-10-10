@@ -74,7 +74,7 @@ export function ZoomReveal() {
               <p className="-mb-[0.1em] overflow-x-visible overflow-y-clip pb-[0.1em]">
                 <span
                   data-ribbon-title
-                  className="block font-serif text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] leading-[1.15] italic"
+                  className="block font-serif text-h3 leading-[1.15] tracking-normal italic"
                 >
                   {title}
                 </span>
@@ -104,7 +104,7 @@ export function ZoomReveal() {
                       <span className="-mb-[0.1em] block overflow-x-visible overflow-y-clip pb-[0.1em]">
                         <span
                           data-ribbon-text
-                          className="block text-[clamp(1.125rem,0.85rem+1.3vw,2rem)] leading-[1.18] font-semibold tracking-[-0.018em] text-balance"
+                          className="block text-h4 leading-[1.18] font-semibold text-balance"
                         >
                           {item}
                         </span>

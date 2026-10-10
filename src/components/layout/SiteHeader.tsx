@@ -68,7 +68,7 @@ export function SiteHeader({
                         href={link.href}
                         aria-current={current ? "true" : undefined}
                         className={cn(
-                          "inline-flex min-h-11 items-center rounded-pill px-4 text-base font-semibold",
+                          "inline-flex min-h-11 items-center rounded-pill px-4 text-ui font-semibold",
                           "transition-colors duration-200",
                           current ? "bg-blue/8 text-blue" : "text-navy hover:bg-navy/5",
                         )}

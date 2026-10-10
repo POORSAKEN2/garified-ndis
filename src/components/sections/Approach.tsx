@@ -34,7 +34,7 @@ export function Approach() {
               >
                 <span className="size-2 rounded-full bg-amber" />
               </span>
-              <p className="font-semibold tabular-nums">{step.number}</p>
+              <p className="text-small font-medium text-muted tabular-nums">{step.number}</p>
               <h3 className="mt-1.5 text-h4 font-bold">{step.title}</h3>
               <p className="mt-3 max-w-[36ch]">{step.text}</p>
             </li>

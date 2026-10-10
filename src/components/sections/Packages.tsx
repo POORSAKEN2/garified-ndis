@@ -53,7 +53,7 @@ export function Packages() {
         ))}
       </ul>
 
-      <p className="mt-10 text-small text-muted lg:mt-12">{copy.footnote}</p>
+      <p className="mt-10 max-w-[60ch] text-small text-muted lg:mt-12">{copy.footnote}</p>
     </Section>
   );
 }

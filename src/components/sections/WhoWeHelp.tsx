@@ -33,7 +33,7 @@ export function WhoWeHelp() {
                   shares the photo's grid cell so it can sit on the photo's corner. */}
               <div className="grid aspect-[3/2] grid-cols-1 grid-rows-1 overflow-hidden rounded-panel bg-tint md:row-span-5 md:aspect-[4/5] md:self-start lg:row-span-1 lg:aspect-[5/4]">
                 <h3
-                  className="relative z-10 col-start-1 row-start-1 self-end justify-self-start rounded-tr-card border-t-[3px] border-amber bg-deep px-4 pt-2 pb-2.5 text-[0.9375rem] leading-snug font-bold text-white sm:text-base"
+                  className="relative z-10 col-start-1 row-start-1 self-end justify-self-start rounded-tr-card border-t-[3px] border-amber bg-deep px-4 pt-2 pb-2.5 text-body leading-snug font-bold text-white"
                 >
                   {tab.tab}
                 </h3>
@@ -62,14 +62,14 @@ export function WhoWeHelp() {
                 )}
               </div>
 
-              <p className="mt-4 font-serif text-[1.125rem] leading-[1.3] text-pretty text-navy/75 italic md:col-start-2 md:mt-0 lg:col-start-1 lg:mt-4">
+              <p className="mt-4 font-serif text-lead leading-[1.3] text-pretty text-muted italic md:col-start-2 md:mt-0 lg:col-start-1 lg:mt-4">
                 {tab.accent}
               </p>
-              <p className="mt-5 text-[1.25rem] leading-[1.3] font-bold tracking-[-0.015em] text-balance md:col-start-2 md:mt-4 lg:col-start-1 lg:mt-5 lg:self-end">{tab.title}</p>
-              <p className="mt-2.5 text-base leading-[1.6] text-muted md:col-start-2 lg:col-start-1">{tab.text}</p>
+              <p className="mt-5 text-h5 font-bold text-balance md:col-start-2 md:mt-4 lg:col-start-1 lg:mt-5 lg:self-end">{tab.title}</p>
+              <p className="mt-2.5 text-muted md:col-start-2 lg:col-start-1">{tab.text}</p>
               <div className="mt-6 md:col-start-2 lg:col-start-1">
                 <p className="sr-only">{copy.sideEyebrow}</p>
-                <Checklist items={tab.items} className="gap-0 border-t border-line text-base *:border-b *:border-line *:py-3 [&>li>[aria-hidden]]:mt-0" />
+                <Checklist items={tab.items} className="gap-0 border-t border-line *:border-b *:border-line *:py-3 [&>li>[aria-hidden]]:mt-0" />
               </div>
               <div className="mt-7 md:col-start-2 lg:col-start-1">
                 <EnquiryTrigger preselect={tab.preselect} variant="outline" size="sm">
