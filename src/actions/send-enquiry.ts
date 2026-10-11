@@ -1,6 +1,6 @@
 "use server";
 
-import { Resend } from "resend";
+import { createTransport, type NodemailerError } from "nodemailer";
 import { enquiry } from "@/content/enquiry";
 import { buildBrief } from "@/lib/build-brief";
 import {
@@ -17,6 +17,9 @@ export type EnquiryState =
 
 /** Submissions faster than this are treated as bots. */
 const MIN_FILL_MS = 3000;
+
+/** Display name on the enquiry emails. */
+const SENDER_NAME = "Garified Website";
 
 export async function sendEnquiry(_prev: EnquiryState, formData: FormData): Promise<EnquiryState> {
   const values = readEnquiryForm(formData);
@@ -41,38 +44,56 @@ export async function sendEnquiry(_prev: EnquiryState, formData: FormData): Prom
     return success;
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.ENQUIRY_TO_EMAIL;
-  const from = process.env.ENQUIRY_FROM_EMAIL;
+  const user = process.env.GMAIL_USER;
+  // Google shows app passwords in groups of four; the spaces are not part of the password.
+  const pass = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
 
-  if (!apiKey || !to || !from) {
+  if (!user || !pass) {
+    const missing = Object.entries({ GMAIL_USER: user, GMAIL_APP_PASSWORD: pass })
+      .filter(([, value]) => !value)
+      .map(([name]) => name)
+      .join(", ");
     if (process.env.NODE_ENV === "development") {
-      // Lets the dialog be exercised locally before Resend is set up. Never in production.
-      console.info("[enquiry] Email not configured; brief not sent.\n" + brief);
+      // Lets the dialog be exercised locally before Gmail is set up. Never in production.
+      console.info(`[enquiry] Email not configured (missing ${missing}); brief not sent.\n` + brief);
       return success;
     }
-    console.error("[enquiry] RESEND_API_KEY, ENQUIRY_TO_EMAIL or ENQUIRY_FROM_EMAIL is missing.");
+    console.error(`[enquiry] Missing ${missing}.`);
     return { status: "error", message: enquiry.error, values };
   }
 
   try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from,
-      to,
+    const transporter = createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+      // Give up within seconds, not nodemailer's minutes-long defaults, so a stalled
+      // connection fails before the hosting platform's request time limit.
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
+    });
+    await transporter.sendMail({
+      // Gmail sends as the signed-in account whatever From says, so it is set to match.
+      from: { name: SENDER_NAME, address: user },
+      to: process.env.ENQUIRY_TO_EMAIL || user,
       replyTo: result.data.email,
       // Line breaks stripped so the business name cannot add header lines.
       subject: `New enquiry: ${result.data.business.replace(/[\r\n]+/g, " ")}`,
       // Plain text only, so nothing the user typed is rendered as HTML.
       text: brief,
     });
-    if (error) {
-      // Log the failure type only, never the enquiry contents.
-      console.error("[enquiry] Resend rejected the email:", error.name);
-      return { status: "error", message: enquiry.error, values };
-    }
   } catch (err) {
-    console.error("[enquiry] Sending failed:", err instanceof Error ? err.name : "unknown error");
+    // Log the failure code only, never the enquiry contents. The SMTP reply can echo an
+    // address back, so it is shown in development only, where it explains setup mistakes
+    // such as a wrong app password (EAUTH).
+    const error = err as NodemailerError | undefined;
+    console.error(
+      "[enquiry] Sending failed:",
+      error?.code ?? "unknown error",
+      process.env.NODE_ENV === "development" ? error?.message : "",
+    );
     return { status: "error", message: enquiry.error, values };
   }
 

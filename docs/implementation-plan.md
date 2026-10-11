@@ -21,7 +21,7 @@ Companion to [spec.md](./spec.md). Status: Draft v1 · 2026-10-08
 | `radix-ui` | ^1.7 | Accessible Dialog, Tabs, Accordion |
 | `lucide-react` | ^1.52 | Icons |
 | `zod` | ^4.6 | Form validation. Zod 4: use `z.flattenError()`, not `error.flatten()` |
-| `resend` | ^6.32 | Email delivery |
+| `nodemailer` | ^10.1 | Email delivery through Google SMTP. Ships its own types |
 | `vitest` (dev) | ^5 | Unit tests for form logic only |
 
 ## Target file structure
@@ -71,7 +71,7 @@ docs/
 
 1. Create branch `redesign`.
 2. Install the dependencies above.
-3. Add `.env.example` with the four variables from spec §8.3. Confirm `.env*.local` is gitignored.
+3. Add `.env.example` with the variables from spec §8.3. Confirm `.env*.local` is gitignored.
 4. Add a `test` script (`vitest run`).
 5. Remove scaffold assets (`public/*.svg`, scaffold `page.tsx` content, Geist fonts).
 
@@ -116,14 +116,14 @@ Docs to read: `02-guides/forms.md`, `02-guides/server-actions.md`, `02-guides/en
 4. `actions/send-enquiry.ts` (`'use server'`):
    - parse `FormData` and validate
    - silently accept honeypot or under-3-second submissions without sending
-   - send through Resend as plain text with `replyTo`
+   - send through Google SMTP (nodemailer) as plain text with `replyTo`
    - return `{ status: "success", brief } | { status: "error", fieldErrors?, message }`
    - log failures without personal data
 5. `EnquiryProvider` (client context): `openEnquiry(preselect?)`, open state, preselect state.
 6. `EnquiryDialog` using Radix Dialog. `EnquiryForm` with `useActionState`, pending state, inline errors and preserved input on error. `EnquirySuccess` with the brief, a Copy brief button (with a clipboard fallback) and "Edit your enquiry".
 7. Full-height sheet layout below `sm`.
 
-**Done when:** with a real `RESEND_API_KEY`, a test enquiry arrives with the correct brief and reply-to. Invalid submissions show errors and send nothing. Unit tests pass.
+**Done when:** with a real `GMAIL_USER` and `GMAIL_APP_PASSWORD`, a test enquiry arrives with the correct brief and reply-to. Invalid submissions show errors and send nothing. Unit tests pass.
 
 ## Phase 5 — Home sections (static)
 
@@ -177,7 +177,7 @@ Docs to read: anime.js v4 docs for `createScope`, `createTimeline`, `onScroll`, 
 
 ## Phase 9 — Handoff
 
-1. README: setup, environment variables, Resend domain verification steps, how to replace mock testimonials, how to swap in the hero photo and logo.
+1. README: setup, environment variables, Gmail app password steps, how to replace mock testimonials, how to swap in the hero photo and logo.
 2. Open a PR from `redesign` to `main` with screenshots at 390px and 1280px.
 
 ## Verification matrix
@@ -199,7 +199,7 @@ Docs to read: anime.js v4 docs for `createScope`, `createTimeline`, `onScroll`, 
 | Risk | Mitigation |
 | --- | --- |
 | Hero flashes before animating | `html.js` gate plus CSS fallback (spec §10.2) |
-| Resend sender not verified at launch | Block launch on domain verification. `onboarding@resend.dev` is for development only |
+| Gmail app password missing or revoked at launch | Set `GMAIL_USER` and `GMAIL_APP_PASSWORD` on the host and send a test enquiry before launch. Production errors visibly when either is missing |
 | Mock testimonials reach production | Guard in `getDisplayableTestimonials()`, a unit test for it, and the Phase 8 build check |
 | Dialog copy is false if left 1:1 | Proposed replacement wording awaiting approval (spec §15.1) |
 | Spam without rate limiting | Honeypot and timing check now; Turnstile if needed |

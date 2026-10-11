@@ -55,7 +55,7 @@ Many are 40 to 65 years old, busy and not especially technical. Many will be rea
 | Palette | Blue palette plus a small amber accent (§6.1). |
 | Type | Plus Jakarta Sans, with Instrument Serif Italic for heading accent words. |
 | Motion | anime.js v4. Transform and opacity only. Respects reduced motion. |
-| Enquiry form | Sent by email through Resend from a Next.js Server Action. |
+| Enquiry form | Sent by email through Google SMTP (nodemailer) from a Next.js Server Action. |
 | Testimonials | New home section. Uses mock data for now, behind a production guard (§9). |
 | Assets | Logo, photos, ABN and contact details are on hold. Use neutral placeholders. |
 
@@ -235,9 +235,9 @@ Icons come from `lucide-react`, plus the custom check.
 2. Client-side checks run first: native `required` and `type="email"`, with errors shown inline next to each field and announced via `aria-describedby` and `aria-live`.
 3. The form posts to the `sendEnquiry` Server Action via `useActionState`. The submit button shows a pending state and is disabled while sending.
 4. The server validates again with Zod. It trims all input and rejects honeypot or too-fast submissions with a generic success response, so bots learn nothing.
-5. The server builds the brief from the 1:1 template and sends it with Resend:
-   - `to`: `ENQUIRY_TO_EMAIL`
-   - `from`: `ENQUIRY_FROM_EMAIL` (needs a domain verified in Resend)
+5. The server builds the brief from the 1:1 template and sends it through Google SMTP (`smtp.gmail.com:465`) with nodemailer:
+   - `to`: `ENQUIRY_TO_EMAIL`, or `GMAIL_USER` when unset
+   - `from`: `Garified Website <GMAIL_USER>` (Gmail always sends as the signed-in account)
    - `replyTo`: the user's email
    - `subject`: `New enquiry: {business}`
    - Body: plain text only, so user input cannot inject HTML.
@@ -248,12 +248,11 @@ Icons come from `lucide-react`, plus the custom check.
 
 | Variable | Scope | Example |
 | --- | --- | --- |
-| `RESEND_API_KEY` | Server only | `re_…` |
-| `ENQUIRY_TO_EMAIL` | Server only | TBD by the client |
-| `ENQUIRY_FROM_EMAIL` | Server only | `Garified Website <enquiries@garified.com.au>` |
-| `SHOW_SAMPLE_CONTENT` | Server only | `true` on previews, unset in production |
+| `GMAIL_USER` | Server only | `enquiries@garified.com.au` (Gmail or Google Workspace) |
+| `GMAIL_APP_PASSWORD` | Server only | 16-character app password |
+| `ENQUIRY_TO_EMAIL` | Server only | TBD by the client. Optional, defaults to `GMAIL_USER` |
 
-`.env.example` documents all four. None use the `NEXT_PUBLIC_` prefix. Until a domain is verified, Resend's `onboarding@resend.dev` sender only delivers to the Resend account owner's address, which is fine for development only.
+`.env.example` documents all three. None use the `NEXT_PUBLIC_` prefix. `GMAIL_APP_PASSWORD` is an app password, not the account password: the account needs 2-Step Verification, then one is created at https://myaccount.google.com/apppasswords. Gmail caps sending at about 500 emails a day (2,000 on Workspace), far above enquiry volume.
 
 ### 8.4 Privacy and security
 

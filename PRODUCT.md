@@ -26,7 +26,7 @@ The site exists to make that offer clear and to collect enquiries. Success: a pr
 
 The work is weekly, tabular and approval-driven: rosters, availability trackers, intake packs, document and expiry registers, inbox summaries, content calendars, enquiry pipelines, invoice batches, reconciliations and payroll input packs. Its vocabulary is "agreed", "approved", "confirmed", "exceptions" and "your nominated contact". Remote or offshore access is scoped explicitly, covering named access, confidentiality and the provider's privacy requirements.
 
-Routes: `/` plus four service pages (`/services/rostering`, `/services/administration`, `/services/marketing`, `/services/accounting`). Contact is a modal enquiry dialog, not a page. Enquiries are sent by email through Resend from a Next.js server action.
+Routes: `/` plus four service pages (`/services/rostering`, `/services/administration`, `/services/marketing`, `/services/accounting`). Contact is a modal enquiry dialog, not a page. Enquiries are sent by email through Google SMTP (nodemailer) from a Next.js server action.
 
 ## Capabilities and Constraints
 
