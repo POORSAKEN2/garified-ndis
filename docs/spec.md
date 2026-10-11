@@ -239,8 +239,8 @@ Icons come from `lucide-react`, plus the custom check.
    - `to`: `ENQUIRY_TO_EMAIL`, or `GMAIL_USER` when unset
    - `from`: `Garified Website <GMAIL_USER>` (Gmail always sends as the signed-in account)
    - `replyTo`: the user's email
-   - `subject`: `New enquiry: {business}`
-   - Body: plain text only, so user input cannot inject HTML.
+   - `subject`: `Garified NDIS – New enquiry: {business}`
+   - Body: an HTML intake sheet (`lib/enquiry-email.ts`: business, contact, team size, the four services as colour-coded tiles, their words, a Reply button) with every user value escaped, plus the plain-text brief as the text alternative. Preview in development at `/styleguide/email` (`?services=none&priorities=none` for the fallbacks).
 6. Success: the dialog shows the success state and a copy of the brief, with a Copy brief button and an "Edit your enquiry" link.
 7. Failure: the form keeps the user's input and shows the error message. Server errors are logged without personal details.
 

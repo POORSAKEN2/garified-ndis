@@ -82,4 +82,17 @@ export const enquiry = {
     // untrue once the brief is emailed. Raise with the client alongside spec 15.1.
     footer: "Prepared for a Garified workflow conversation. This brief has not been sent.",
   },
+
+  // New copy, not on the reference site: the HTML email Garified receives. Only staff
+  // read it. "{name}" is replaced with the contact's name.
+  email: {
+    sheet: "New website enquiry",
+    requested: "Requested",
+    notRequested: "Not requested",
+    priorities: "What is taking up their time",
+    noPriorities: "They left this blank.",
+    reply: "Reply to {name}",
+    replySubject: "Re: Your Garified enquiry",
+    footer: "Sent from the enquiry form on the Garified website. Pressing Reply also reaches {name}.",
+  },
 } as const;

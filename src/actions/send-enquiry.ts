@@ -3,6 +3,7 @@
 import { createTransport, type NodemailerError } from "nodemailer";
 import { enquiry } from "@/content/enquiry";
 import { buildBrief } from "@/lib/build-brief";
+import { buildEnquiryEmail } from "@/lib/enquiry-email";
 import {
   readEnquiryForm,
   validateEnquiry,
@@ -80,8 +81,10 @@ export async function sendEnquiry(_prev: EnquiryState, formData: FormData): Prom
       to: process.env.ENQUIRY_TO_EMAIL || user,
       replyTo: result.data.email,
       // Line breaks stripped so the business name cannot add header lines.
-      subject: `New enquiry: ${result.data.business.replace(/[\r\n]+/g, " ")}`,
-      // Plain text only, so nothing the user typed is rendered as HTML.
+      subject: `Garified NDIS – New enquiry: ${result.data.business.replace(/[\r\n]+/g, " ")}`,
+      // The designed sheet, with everything the user typed escaped, plus the plain-text
+      // brief for clients that do not show HTML.
+      html: buildEnquiryEmail(result.data),
       text: brief,
     });
   } catch (err) {
