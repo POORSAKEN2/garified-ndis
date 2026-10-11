@@ -17,6 +17,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { TextLink } from "@/components/ui/TextLink";
 import { ExampleSheet } from "./ExampleSheet";
+import { includedIcon } from "./included-icon";
 import { serviceArt } from "./service-art";
 
 export function serviceMetadata(id: ServiceId): Metadata {
@@ -46,7 +47,7 @@ export function ServicePage({ id }: { id: ServiceId }) {
       <Handover detail={detail} />
 
       <Section ground="tint" aria-labelledby="process-title">
-        <SectionHead eyebrow={servicePage.process.eyebrow} title={detail.process.title} titleId="process-title" />
+        <SectionHead title={detail.process.title} titleId="process-title" />
         <StepTrack
           steps={detail.process.steps.map((step, i) => ({ ...step, number: `0${i + 1}` }))}
           className="mt-12 lg:mt-16"
@@ -61,8 +62,7 @@ export function ServicePage({ id }: { id: ServiceId }) {
 
 /**
  * The first viewport. From lg the copy sits on the left and the stage fills the right,
- * from the top of the window (under the header) to the hero's foot and out to the
- * screen edge. On phones
+ * from the header's bottom rule to the hero's foot and out to the screen edge. On phones
  * the stage follows the copy, edge to edge, so the action stays in the first screen.
  */
 function Hero({ service, preselect }: { service: Service; preselect: Preselect }) {
@@ -106,9 +106,8 @@ function Hero({ service, preselect }: { service: Service; preselect: Preselect }
             "flex items-center bg-tint pt-24 pb-16 sm:py-20",
             // Phones and tablets: edge to edge. From lg: out to the right edge only, rounded on the left.
             "mx-[calc(var(--bleed)*-1)] px-(--bleed)",
-            // From lg it also rises 80px under the floating header, so the capsule frosts over it.
             "lg:mr-[calc(var(--bleed)*-1)] lg:ml-0 lg:rounded-bl-hero lg:pr-(--bleed) lg:pl-[clamp(32px,4vw,64px)]",
-            "lg:-mt-20 lg:pt-[calc(80px+4rem)] lg:pb-16",
+            "lg:pt-24 lg:pb-16",
           ].join(" ")}
         >
           <div className="relative w-full">
@@ -134,25 +133,31 @@ function Hero({ service, preselect }: { service: Service; preselect: Preselect }
 
 type Props = { detail: ServiceDetail };
 
-/** What's included: the six tasks as a ruled grid. They are options, not steps, so they carry no numbers. */
+/**
+ * What's included: the six tasks as a ruled grid, each marked with an outline icon. They
+ * are options, not steps, so they carry no numbers.
+ */
 function Included({ detail }: Props) {
   const { included } = detail;
   return (
     <Section id="included" aria-labelledby="included-title">
       <SectionHead
         layout="split"
-        eyebrow={included.eyebrow}
         title={included.title}
         titleId="included-title"
         intro={<p>{included.intro}</p>}
       />
       <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-y-14">
-        {included.items.map((item) => (
-          <li key={item.title} className="border-t border-line pt-6">
-            <h3 className="text-h5 font-bold">{item.title}</h3>
-            <p className="mt-3 text-muted">{item.text}</p>
-          </li>
-        ))}
+        {included.items.map((item) => {
+          const Icon = includedIcon[item.title];
+          return (
+            <li key={item.title} className="border-t border-line pt-6">
+              {Icon && <Icon aria-hidden="true" strokeWidth={1.75} className="mb-4 size-7 text-blue" />}
+              <h3 className="text-h5 font-bold">{item.title}</h3>
+              <p className="mt-3 text-muted">{item.text}</p>
+            </li>
+          );
+        })}
       </ul>
     </Section>
   );
@@ -166,7 +171,6 @@ function Handover({ detail }: Props) {
     <Section aria-labelledby="handover-title">
       <SectionHead
         layout="split"
-        eyebrow={copy.eyebrow}
         title={copy.title}
         titleId="handover-title"
         intro={<p>{handover.intro}</p>}

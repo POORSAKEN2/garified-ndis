@@ -8,7 +8,7 @@ import { CopyMotion } from "@/components/motion/CopyMotion";
 import { HeroIcons } from "./HeroIcons";
 
 // Week sheet (WeekSheet + SheetMotion) is parked for now; the hero runs centred on copy alone.
-// Fills the viewport below the sticky header (72px, 80px from lg) and
+// Fills the viewport below the sticky header (`--head`) and
 // centres the copy vertically; on short screens it grows with the content instead. Gaps
 // scale with viewport height (svh) so the block keeps the same proportions on every screen.
 // From md it stops 72px short, so the next section peeks up as a cue to scroll.
@@ -18,7 +18,7 @@ export function Hero() {
     <section
       data-cta-hide
       aria-labelledby="hero-title"
-      className="relative flex min-h-[calc(100svh-72px)] items-center py-[clamp(2rem,6svh,4rem)] md:min-h-[calc(100svh-144px)] lg:min-h-[calc(100svh-152px)]"
+      className="relative flex min-h-[calc(100svh_-_var(--head))] items-center py-[clamp(2rem,6svh,4rem)] md:min-h-[calc(100svh_-_var(--head)_-_72px)]"
     >
       <HeroIcons />
       <CopyMotion className="container-site relative flex flex-col items-center text-center">

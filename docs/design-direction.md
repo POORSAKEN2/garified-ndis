@@ -129,3 +129,19 @@ Example data lives in `src/content/examples.ts`. It is authored demo material, a
 under the "Example" label, with placeholder names and no prices, clients or statistics.
 Sheet names and footers reference the handover outputs by index, so they stay 1:1 with the
 copy.
+
+## Header: the ruled bar (2026-10-11)
+
+The owner asked for a header that does not float. The frosted capsule (a glass pill
+hung 12px below the top of the window) became a solid white bar, edge to edge, closed
+by a hairline across the window.
+
+| Capsule | Now | Why |
+| --- | --- | --- |
+| Frosted pill inside the container, gap above it, shadow once scrolled | White bar attached to the top edge, `line` rule across the window, no shadow | Not floating, per the owner. It is attached, not raised, so the rule marks its edge and the one shadow token stays for raised things |
+| Section links as pills, centred, tinted pill for the section being read | Ruled cells on the right, like the column heads of a roster; a 2px blue bar grows on the bottom rule under the section being read | Carries the hero's ruled-rows world into the chrome, and the marker reads as a selected column |
+| Menu: second frosted pane hung 8px under the capsule | Toggle is the bar's last cell (two bars that cross into an X). The drawer is full width, slides out from under the bar, lists the links as large ruled rows with a down arrow, and dims the page with a scrim | Same world as the desktop cells; large rows are easy taps for older readers. Tapping the scrim, a link or Escape closes it |
+| 72px tall (80px from lg), hard-coded in the hero and zoom reveal | `--head` in globals.css: 64px, 72px from lg. Hero, zoom reveal and `scroll-padding-top` read it | One source for the bar height |
+| Service stage rose 80px under the capsule | Stage starts at the bar's rule | Nothing to frost through a solid bar |
+
+Always sticky, never hides on scroll: the most predictable choice for busy readers.

@@ -9,7 +9,7 @@ export function Approach() {
   return (
     <Section id={copy.id} aria-labelledby="approach-title">
       <div className="grid gap-8 lg:grid-cols-2 lg:items-end lg:gap-16">
-        <SectionHead eyebrow={copy.eyebrow} title={copy.title} titleId="approach-title" />
+        <SectionHead title={copy.title} titleId="approach-title" />
         <div>
           <p className="measure text-lead">{copy.text}</p>
           <EnquiryTrigger className="mt-8">

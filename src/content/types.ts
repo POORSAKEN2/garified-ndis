@@ -12,7 +12,6 @@ export type ServiceId = "rostering" | "administration" | "marketing" | "accounti
 /** A FAQ section: the home one, and one on each full service page. */
 export type FaqCopy = {
   id: string;
-  eyebrow: string;
   title: Rich;
   intro: string;
   items: readonly { q: string; a: string }[];

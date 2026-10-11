@@ -14,7 +14,6 @@ export function ServiceList() {
     <Section id={copy.id} aria-labelledby="services-title">
       <SectionHead
         layout="split"
-        eyebrow={copy.eyebrow}
         title={copy.title}
         titleId="services-title"
         intro={<p>{copy.intro}</p>}

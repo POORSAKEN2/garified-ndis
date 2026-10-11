@@ -36,7 +36,7 @@ function RibbonTick() {
  * scrolls. The ribbon sits on a solid deep band across the photo's lower edge, over the
  * desk and clear of the faces: its title as a heading row, then the three kinds of
  * provider Garified works with, each ticked like an approved task in the hero sheet.
- * The stage fills the room under the header (72px, 80px from lg),
+ * The stage fills the room under the header (`--head`),
  * but never gets taller than 4:5, so on phones the crop keeps both people in view. A
  * shorter stage sticks centred in that room and follows the hero with no gap. Sticking
  * only matters when motion makes the section taller than the stage.
@@ -46,7 +46,7 @@ export function ZoomReveal() {
   const title = richToText(ribbon.title);
   return (
     <ZoomMotion aria-label={title}>
-      <div className="sticky top-[calc(var(--head)_+_(var(--room)_-_var(--stage))_/_2)] h-(--stage) [--head:72px] [--room:calc(100svh_-_var(--head))] [--stage:min(var(--room),125vw)] lg:[--head:80px]">
+      <div className="sticky top-[calc(var(--head)_+_(var(--room)_-_var(--stage))_/_2)] h-(--stage) [--room:calc(100svh_-_var(--head))] [--stage:min(var(--room),125vw)]">
         <div data-zoom-frame className="relative size-full overflow-hidden bg-tint">
           <div data-zoom-photo className="absolute inset-0 z-0 origin-[55%_40%]">
             {/* In portrait the frame crops a photo about 2.2 times the screen's width. */}

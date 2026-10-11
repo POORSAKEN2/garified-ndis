@@ -26,7 +26,6 @@ export const site = {
 export type ProviderTab = {
   id: "in-home" | "sil" | "sda";
   tab: string;
-  accent: string;
   title: string;
   text: string;
   items: readonly string[];
@@ -34,7 +33,6 @@ export type ProviderTab = {
 };
 
 export type Package = {
-  kicker: string;
   title: Rich;
   text: string;
   items: readonly string[];
@@ -78,7 +76,6 @@ export const home = {
 
   services: {
     id: "services",
-    eyebrow: "01 / Our services",
     title: ["Four services.", BR, "One clear ", { em: "partner." }] satisfies Rich,
     intro:
       "The work behind a provider can fill the whole day. Choose the support you need, with clear responsibilities and a process that fits your team.",
@@ -87,7 +84,6 @@ export const home = {
 
   approach: {
     id: "approach",
-    eyebrow: "02 / A practical partnership",
     title: ["Your systems.", BR, "Your standards.", BR, { em: "Our support." }] satisfies Rich,
     text: "Good support starts by understanding how your business works. We agree the scope, follow your approved processes and keep your team in control.",
     cta: "Discuss your workflow",
@@ -112,7 +108,6 @@ export const home = {
 
   providers: {
     id: "providers",
-    eyebrow: "03 / Who we help",
     title: ["Support that understands", BR, { em: "your kind of business." }] satisfies Rich,
     cta: "Find the right support",
     sideEyebrow: "Where we can help",
@@ -120,9 +115,8 @@ export const home = {
       {
         id: "in-home",
         tab: "In-home & community",
-        accent: "Supporting your day-to-day delivery",
         title: "Keep everyday services moving.",
-        text: "For growing providers balancing recurring shifts, participant intake and the administration behind each service. We bring structure to the work that fills your day.",
+        text: "For growing providers balancing recurring shifts, intake and service administration. We bring structure to the daily workload.",
         items: [
           "Rosters and worker confirmations",
           "Intake and staff document tracking",
@@ -133,9 +127,8 @@ export const home = {
       {
         id: "sil",
         tab: "SIL providers",
-        accent: "Scoped around each home's requirements",
         title: "A clearer picture across your homes.",
-        text: "Support for the administrative work behind supported independent living. Your Australian team keeps care and staffing decisions; we help maintain the agreed roster, records and reporting.",
+        text: "Back-office support for SIL homes. Your Australian team makes care and staffing decisions; we maintain the agreed roster, records and reporting.",
         items: [
           "Approved roster updates and gap reports",
           "Staff records and document reminders",
@@ -146,9 +139,8 @@ export const home = {
       {
         id: "sda",
         tab: "SDA businesses",
-        accent: "From property visibility to intake conversations",
         title: "Give your vacancies a clear next step.",
-        text: "Present verified property information with considered marketing. Keep referral contacts, enquiries and viewing follow-up organised, so your intake team can focus on suitability.",
+        text: "Market verified property details with care. We keep referrals, enquiries and viewings organised, so your intake team can focus on suitability.",
         items: [
           "Property listings and vacancy campaigns",
           "Referral research and outreach",
@@ -161,7 +153,6 @@ export const home = {
 
   packages: {
     id: "packages",
-    eyebrow: "04 / Your level of support",
     title: ["A focused start.", BR, { em: "Room to grow." }] satisfies Rich,
     intro:
       "Begin with one workflow or combine the services your business needs. Every engagement has an agreed scope, service hours and a nominated contact.",
@@ -169,7 +160,6 @@ export const home = {
       "Tailored to your workload. Advertising spend and registered practitioner services are scoped separately.",
     items: [
       {
-        kicker: "01 / A lighter admin load",
         title: ["Admin", BR, "Essentials"],
         text: "Practical support for the records and tasks that keep your business organised.",
         items: [
@@ -182,7 +172,6 @@ export const home = {
         preselect: ["administration"],
       },
       {
-        kicker: "02 / Your daily operations",
         title: ["Operations", BR, "Desk"],
         text: "A structured partner for rostering, administration and finance preparation.",
         items: [
@@ -195,7 +184,6 @@ export const home = {
         preselect: ["rostering", "administration", "accounting"],
       },
       {
-        kicker: "03 / A broader partnership",
         title: ["Complete", BR, "Support"],
         text: "Bring operations, marketing and finance administration into one support plan.",
         items: [
@@ -212,7 +200,6 @@ export const home = {
 
   faq: {
     id: "faq",
-    eyebrow: "05 / A little more clarity",
     title: ["Good questions.", BR, { em: "Clear answers." }] satisfies Rich,
     intro: "A few things to know before we start working together.",
     items: [

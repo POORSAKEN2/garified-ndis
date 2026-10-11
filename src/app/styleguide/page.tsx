@@ -37,8 +37,7 @@ export default function Styleguide() {
       </Section>
 
       <Section ground="tint" id="services">
-        <Eyebrow>01 / Our services</Eyebrow>
-        <Heading className="mt-4" content={["Four services.", BR, "One clear ", { em: "partner." }]} />
+        <Heading content={["Four services.", BR, "One clear ", { em: "partner." }]} />
         <Heading as="h3" className="mt-10" content="Keep everyday services moving." />
         <Heading as="h4" className="mt-6" content="Rostering" />
         <p className="measure mt-4 text-muted">
@@ -78,9 +77,7 @@ export default function Styleguide() {
 
       <Section ground="deep" id="approach">
         <div id="contact" data-cta-hide />
-        <Eyebrow>02 / A practical partnership</Eyebrow>
         <Heading
-          className="mt-4"
           content={["Your systems.", BR, "Your standards.", BR, { em: "Our support." }]}
         />
         <p className="measure mt-6 text-on-deep">

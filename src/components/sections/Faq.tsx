@@ -14,7 +14,6 @@ export function Faq({ copy = home.faq }: { copy?: FaqCopy }) {
     <Section id={copy.id} aria-labelledby="faq-title">
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <SectionHead
-          eyebrow={copy.eyebrow}
           title={copy.title}
           titleId="faq-title"
           intro={<p>{copy.intro}</p>}

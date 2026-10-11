@@ -8,19 +8,18 @@ import { cn } from "@/lib/cn";
 import { Logo } from "./Logo";
 import { MobileNavPanel, MobileNavToggle } from "./MobileNav";
 import { useActiveSection } from "./use-active-section";
-import { useScrolled } from "./use-scrolled";
 
 export type HeaderVariant = "home" | "service";
 
 const sectionIds = site.nav.links.map((link) => link.href.slice(1));
 
 /**
- * Sticky header: a frosted capsule floating 12px (16px from lg) below the top of the
- * window, inside the page container, so the photo and deep bands blur past under it.
- * The strip around it lets clicks through. 72px tall in all (80px from lg); the hero
- * and the zoom reveal size themselves from that. It gains its shadow once the page
- * scrolls. The home variant centres the section links, marks the one being read, and
- * has a mobile menu; service pages and the 404 show only the logo and Let’s talk.
+ * Sticky ruled bar, solid white and edge to edge, closed by a hairline across the window.
+ * Its height is `--head` (64px, 72px from lg, in globals.css); the hero, the zoom reveal
+ * and anchor jumps size themselves from it. On the home page the section links stand as
+ * ruled cells, like the column heads of a roster, and the section being read gets a blue
+ * bar on the bottom rule. Under lg they move into a drawer that slides out from under the
+ * bar. Service pages and the 404 show only the logo and Let’s talk.
  */
 export function SiteHeader({
   variant,
@@ -30,47 +29,40 @@ export function SiteHeader({
   /** Services ticked when Let’s talk opens the dialog, for example on a service page. */
   preselect?: readonly ServiceId[];
 }) {
-  const scrolled = useScrolled(8);
   const active = useActiveSection(sectionIds);
   const [open, setOpen] = useState(false);
-  const toggleRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const isHome = variant === "home";
 
   const close = useCallback((opts?: { restoreFocus?: boolean }) => {
     setOpen(false);
-    if (opts?.restoreFocus) toggleRef.current?.querySelector("button")?.focus();
+    if (opts?.restoreFocus) toggleRef.current?.focus();
   }, []);
 
   return (
-    <header data-site-header className="pointer-events-none sticky top-0 z-40 pt-3 lg:pt-4">
-      <div className="container-site relative">
-        <div
-          className={cn(
-            "glass pointer-events-auto flex h-15 items-center gap-3 rounded-pill pr-2 pl-5",
-            "lg:grid lg:h-16 lg:grid-cols-[1fr_auto_1fr] lg:pr-2.5 lg:pl-6",
-            // The light top edge catches like the rim of a pane; the hairline keeps the
-            // capsule's outline on white, where there is nothing behind it to frost.
-            "inset-ring inset-shadow-[0_1px_0_rgb(255_255_255/0.8)]",
-            "transition-shadow duration-300 ease-out-expo",
-            scrolled || open ? "inset-ring-navy/6 shadow-raised" : "inset-ring-navy/10",
-          )}
-        >
-          <Logo className="lg:justify-self-start" />
+    <header data-site-header className="sticky top-0 z-40">
+      {/* Above the drawer, so the drawer slides out from under it. */}
+      <div className="relative z-10 border-b border-line bg-white">
+        <div className="container-site flex h-[calc(var(--head)_-_1px)]">
+          <Logo className="mr-auto self-center" />
 
           {isHome && (
-            <nav aria-label={site.nav.label} className="hidden lg:block">
-              <ul className="flex items-center gap-1">
+            <nav aria-label={site.nav.label} className="hidden lg:flex">
+              <ul className="flex border-l border-line">
                 {site.nav.links.map((link) => {
                   const current = active === link.href.slice(1);
                   return (
-                    <li key={link.href}>
+                    <li key={link.href} className="flex border-r border-line">
                       <a
                         href={link.href}
                         aria-current={current ? "true" : undefined}
                         className={cn(
-                          "inline-flex min-h-11 items-center rounded-pill px-4 text-ui font-semibold",
-                          "transition-colors duration-200",
-                          current ? "bg-blue/8 text-blue" : "text-navy hover:bg-navy/5",
+                          "relative flex items-center px-6 text-ui font-semibold",
+                          "transition-colors duration-200 hover:bg-tint focus-visible:-outline-offset-4",
+                          // The marker sits on the bottom rule and grows from the middle.
+                          "after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-blue",
+                          "after:transition-transform after:duration-300 after:ease-out-expo",
+                          current ? "text-blue after:scale-x-100" : "text-navy after:scale-x-0",
                         )}
                       >
                         {link.label}
@@ -82,25 +74,19 @@ export function SiteHeader({
             </nav>
           )}
 
-          <div className="ml-auto flex items-center gap-2 lg:col-start-3 lg:justify-self-end">
-            <EnquiryTrigger
-              size="sm"
-              preselect={preselect}
-              // A media-query class, so it beats the button's own inline-flex (cn does not merge).
-              className={isHome ? "max-sm:hidden" : undefined}
-            >
+          <div className={cn("flex items-center pl-6", isHome && "pr-4 max-sm:hidden lg:pr-0")}>
+            <EnquiryTrigger size="sm" preselect={preselect}>
               {site.letsTalk}
             </EnquiryTrigger>
-            {isHome && (
-              <div ref={toggleRef} className="lg:hidden">
-                <MobileNavToggle open={open} onToggle={() => setOpen((v) => !v)} />
-              </div>
-            )}
           </div>
-        </div>
 
-        {isHome && <MobileNavPanel open={open} active={active} onClose={close} />}
+          {isHome && (
+            <MobileNavToggle ref={toggleRef} open={open} onToggle={() => setOpen((v) => !v)} />
+          )}
+        </div>
       </div>
+
+      {isHome && <MobileNavPanel open={open} active={active} onClose={close} />}
     </header>
   );
 }

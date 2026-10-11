@@ -1,7 +1,6 @@
 import { home } from "@/content/site";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { Checklist } from "@/components/ui/Checklist";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
@@ -14,7 +13,6 @@ export function Packages() {
     <Section ground="tint" id={copy.id} aria-labelledby="packages-title">
       <SectionHead
         layout="split"
-        eyebrow={copy.eyebrow}
         title={copy.title}
         titleId="packages-title"
         intro={<p>{copy.intro}</p>}
@@ -33,8 +31,7 @@ export function Packages() {
                 : "border border-line bg-white",
             )}
           >
-            <Eyebrow>{pkg.kicker}</Eyebrow>
-            <Heading as="h3" className="mt-4" content={pkg.title} />
+            <Heading as="h3" content={pkg.title} />
             <p className={cn("mt-4", pkg.featured ? "text-on-deep" : "text-muted")}>{pkg.text}</p>
             <Checklist
               items={pkg.items}

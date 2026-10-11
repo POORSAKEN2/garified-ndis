@@ -1,11 +1,9 @@
 import type { ReactNode } from "react";
 import type { Rich } from "@/content/types";
 import { cn } from "@/lib/cn";
-import { Eyebrow } from "./Eyebrow";
 import { Heading } from "./Heading";
 
 type SectionHeadProps = {
-  eyebrow: string;
   title: Rich | string;
   /** Used as the section's accessible name. */
   titleId?: string;
@@ -15,7 +13,7 @@ type SectionHeadProps = {
   className?: string;
 };
 
-export function SectionHead({ eyebrow, title, titleId, intro, layout = "stack", className }: SectionHeadProps) {
+export function SectionHead({ title, titleId, intro, layout = "stack", className }: SectionHeadProps) {
   return (
     <div
       className={cn(
@@ -23,10 +21,7 @@ export function SectionHead({ eyebrow, title, titleId, intro, layout = "stack", 
         className,
       )}
     >
-      <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <Heading id={titleId} className="mt-4" content={title} />
-      </div>
+      <Heading id={titleId} content={title} />
       {intro && (
         <div className={cn("measure text-lead text-muted in-[.on-deep]:text-on-deep", layout === "split" && "lg:pb-1.5")}>
           {intro}

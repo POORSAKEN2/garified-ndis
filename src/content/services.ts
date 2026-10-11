@@ -33,7 +33,6 @@ export type ServiceDetail = {
     };
   };
   included: {
-    eyebrow: string;
     title: Rich;
     intro: string;
     items: readonly { title: string; text: string }[];
@@ -48,7 +47,7 @@ export type ServiceDetail = {
     title: Rich;
     steps: readonly { title: string; text: string }[];
   };
-  faq: Omit<FaqCopy, "id" | "eyebrow" | "title">;
+  faq: Omit<FaqCopy, "id" | "title">;
   contact: { eyebrow: string; title: Rich; text: string };
 };
 
@@ -65,16 +64,13 @@ export const servicePage = {
     engagement: "Your engagement",
   },
   handover: {
-    eyebrow: "02 / A clear handover",
     title: ["Know what", BR, { em: "to expect." }] satisfies Rich,
     preparesTitle: "Garified prepares",
     controlEyebrow: "Your provider stays in control",
     controlTitle: ["Your team leads", BR, "the decisions."] satisfies Rich,
   },
-  process: { eyebrow: "03 / How we work together" },
   faq: {
     id: "questions",
-    eyebrow: "04 / A little more clarity",
     title: ["Good questions.", BR, { em: "Clear answers." }] satisfies Rich,
   },
 } as const;
@@ -107,7 +103,6 @@ export const services = [
         },
       },
       included: {
-        eyebrow: "01 / Your rostering support",
         title: ["Practical support.", BR, { em: "A clearer roster." }],
         intro:
           "Choose the roster tasks your team needs help with. We agree the workflow, updates and reporting before starting.",
@@ -228,7 +223,6 @@ export const services = [
         },
       },
       included: {
-        eyebrow: "01 / Your administration support",
         title: ["Practical support.", BR, { em: "Less to chase." }],
         intro:
           "Choose the admin tasks taking your team’s time. We agree your templates, follow-up process and reporting before starting.",
@@ -349,7 +343,6 @@ export const services = [
         },
       },
       included: {
-        eyebrow: "01 / Your marketing support",
         title: ["Practical marketing.", BR, { em: "A clearer message." }],
         intro:
           "Choose the services or vacancies you want to promote. We agree your audience, content, approval process and reporting before starting.",
@@ -470,7 +463,6 @@ export const services = [
         },
       },
       included: {
-        eyebrow: "01 / Your accounting support",
         title: ["Practical support.", BR, { em: "Cleaner records." }],
         intro:
           "Choose the finance tasks your business needs help with. We agree your systems, approved inputs, review process and reporting before starting.",

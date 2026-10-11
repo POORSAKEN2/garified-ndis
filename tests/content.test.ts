@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { includedIcon } from "@/components/service/included-icon";
 import { teamSizes } from "@/content/enquiry";
 import { exampleSheets } from "@/content/examples";
 import { exploreLabel, services } from "@/content/services";
@@ -15,7 +16,7 @@ describe("copy punctuation", () => {
   it("uses straight apostrophes in team's, Garified's and home's", () => {
     expect(services[0].detail.hero.panel.title).toContain("team's approval");
     expect(services[3].detail.faq.items[0].a).toContain("Garified's core offer");
-    expect(home.providers.tabs[1].accent).toBe("Scoped around each home's requirements");
+    expect(services[0].detail.faq.items[1].a).toContain("each home's approved");
   });
 
   it("keeps the reference's one curly apostrophe in team’s time", () => {
@@ -31,12 +32,6 @@ describe("copy punctuation", () => {
 describe("services", () => {
   it("numbers the four services in order", () => {
     expect(services.map((s) => s.number)).toEqual(["01", "02", "03", "04"]);
-    expect(services.map((s) => s.detail.included.eyebrow)).toEqual([
-      "01 / Your rostering support",
-      "01 / Your administration support",
-      "01 / Your marketing support",
-      "01 / Your accounting support",
-    ]);
   });
 
   it("builds aria labels from the title", () => {
@@ -50,6 +45,14 @@ describe("services", () => {
       expect(s.detail.handover.control).toHaveLength(4);
       expect(s.detail.process.steps).toHaveLength(3);
       expect(s.detail.faq.items).toHaveLength(4);
+    }
+  });
+
+  it("gives every included task its own icon", () => {
+    for (const s of services) {
+      const icons = s.detail.included.items.map((item) => includedIcon[item.title]);
+      expect(icons.every(Boolean), s.id).toBe(true);
+      expect(new Set(icons).size, s.id).toBe(icons.length);
     }
   });
 });
