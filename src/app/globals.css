@@ -121,6 +121,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Tailwind v4's preflight leaves buttons on the default cursor. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
   h1,
   h2,
   h3,
