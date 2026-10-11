@@ -99,3 +99,33 @@ Deliberate departures from the spec, and why:
 Motion triggers use an IntersectionObserver (`components/motion/play-in-view.ts`) and
 play once. Testing note: headless Edge sometimes stops producing frames on idle pages,
 which looks like a stalled animation. Check motion in a real browser.
+
+## Service pages: the stage (2026-10-10)
+
+The four `/services/*` pages share one template (`components/service/ServicePage.tsx`).
+An earlier pass the same day set them as a scope document (margin column, numbered
+clauses 1.1–1.6, a 2px rule on every section). The owner asked for a cleaner page that
+catches the eye, with the information unchanged, so it was rebuilt as below. Header,
+footer and all copy are unchanged.
+
+| Scope document | Now | Why |
+| --- | --- | --- |
+| Ruled title block, H1 across the column, sheet beside the intro | Copy on the left. On the right a tint **stage** runs from the top of the window (under the frosted header) to the hero's foot and out to the screen edge. The example sheet sits on it, and the service's clay icon (the same four as the home hero) lands on the sheet's corner | One bold, specific moment per page. The icon ties each page to the home hero; the sheet still shows the work |
+| H1 at display (84) | H1 at a new `title` step (64, `--text-title`) | Beside the stage, 84 broke "A better business view." onto four lines. 64 keeps every title on its two copy lines |
+| Margin column with sticky section numbers, 2px navy rule per section | The home page's own `SectionHead` (sentence-case eyebrow with its number, heading, intro) | Less chrome, and the service pages now read as the same site as home |
+| Included items as numbered clauses, linked from the sheet | A 3-column ruled grid, no numbers, no links | They are options, not a sequence, so numbers carried nothing once the cross-links went |
+| Sign-off close | The home `ContactCta` deep band | Same close as home, with the service ticked in the dialog |
+| Service number (01–04) before the hero eyebrow | Dropped | It clashed with the page's own section 01 directly below |
+
+Kept: the handover as one joined panel (Garified prepares on tint with amber ticks, your
+team decides on deep), the process step track (on a tint band) and the home FAQ layout.
+
+Motion: `SheetMotion` lands the icon (scale, drop and a small counter-turn), then the
+rows rise and the statuses stamp on, then the icon keeps a slow drift. It plays when the
+sheet is in view: at load on desktop, after the copy on phones. Reduced motion and JS-off
+show everything at rest.
+
+Example data lives in `src/content/examples.ts`. It is authored demo material, always shown
+under the "Example" label, with placeholder names and no prices, clients or statistics.
+Sheet names and footers reference the handover outputs by index, so they stay 1:1 with the
+copy.

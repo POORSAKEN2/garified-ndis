@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { teamSizes } from "@/content/enquiry";
-import { exploreLabel, serviceHeading, services } from "@/content/services";
+import { exampleSheets } from "@/content/examples";
+import { exploreLabel, services } from "@/content/services";
 import { home } from "@/content/site";
 import { richToText } from "@/content/types";
 
@@ -11,9 +12,9 @@ describe("copy punctuation", () => {
     expect(richToText(home.contact.text)).toContain("We’ll start");
   });
 
-  it("uses straight apostrophes in team's, provider's and home's", () => {
+  it("uses straight apostrophes in team's, Garified's and home's", () => {
     expect(services[0].detail.hero.panel.title).toContain("team's approval");
-    expect(services[3].page.intro).toContain("provider's accountant");
+    expect(services[3].detail.faq.items[0].a).toContain("Garified's core offer");
     expect(home.providers.tabs[1].accent).toBe("Scoped around each home's requirements");
   });
 
@@ -30,21 +31,20 @@ describe("copy punctuation", () => {
 describe("services", () => {
   it("numbers the four services in order", () => {
     expect(services.map((s) => s.number)).toEqual(["01", "02", "03", "04"]);
-    expect([services[0], services[1], services[2]].map((s) => s.detail.included.eyebrow)).toEqual([
+    expect(services.map((s) => s.detail.included.eyebrow)).toEqual([
       "01 / Your rostering support",
       "01 / Your administration support",
       "01 / Your marketing support",
+      "01 / Your accounting support",
     ]);
-    expect(services[3].page.eyebrow).toBe("04 / Garified services");
   });
 
-  it("builds headings and aria labels from the title", () => {
-    expect(serviceHeading(services[3])).toBe("Accounting support.");
+  it("builds aria labels from the title", () => {
     expect(exploreLabel(services[3])).toBe("Explore accounting support");
   });
 
-  it("matches the reference's item counts on each full service page", () => {
-    for (const s of [services[0], services[1], services[2]]) {
+  it("matches the reference's item counts on each service page", () => {
+    for (const s of services) {
       expect(s.detail.included.items).toHaveLength(6);
       expect(s.detail.handover.prepares).toHaveLength(5);
       expect(s.detail.handover.control).toHaveLength(4);
@@ -52,9 +52,15 @@ describe("services", () => {
       expect(s.detail.faq.items).toHaveLength(4);
     }
   });
+});
 
-  it("has five checklist items on the legacy accounting page", () => {
-    expect(services[3].page.items).toHaveLength(5);
+describe("example sheets", () => {
+  it("name every sheet and footer after a real handover output", () => {
+    for (const s of services) {
+      const sheet = exampleSheets[s.id];
+      expect(s.detail.handover.prepares[sheet.output]).toBeDefined();
+      expect(s.detail.handover.prepares[sheet.footer.output]).toBeDefined();
+    }
   });
 });
 

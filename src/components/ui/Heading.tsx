@@ -4,6 +4,7 @@ import { RichText } from "./RichText";
 
 const sizes = {
   display: "text-display",
+  title: "text-title",
   h2: "text-h2",
   h3: "text-h3",
   h4: "text-h4",

@@ -1,229 +1,209 @@
 import type { Metadata } from "next";
-import {
-  getService,
-  serviceHeading,
-  servicePage,
-  type LegacyServicePage as LegacyPage,
-  type Service,
-  type ServiceDetail,
-} from "@/content/services";
+import Image from "next/image";
+import { exampleSheets } from "@/content/examples";
+import { getService, servicePage, type Service, type ServiceDetail } from "@/content/services";
 import type { ServiceId } from "@/content/types";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { SheetMotion } from "@/components/motion/SheetMotion";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Faq } from "@/components/sections/Faq";
 import { StepTrack } from "@/components/sections/StepTrack";
-import { serviceSwatch } from "@/components/sections/service-swatch";
-import { Checklist } from "@/components/ui/Checklist";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Heading } from "@/components/ui/Heading";
 import { CheckIcon } from "@/components/ui/Icons";
+import { RichText } from "@/components/ui/RichText";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { TextLink } from "@/components/ui/TextLink";
-import { cn } from "@/lib/cn";
+import { ExampleSheet } from "./ExampleSheet";
+import { serviceArt } from "./service-art";
 
 export function serviceMetadata(id: ServiceId): Metadata {
-  const service = getService(id);
-  if (service.detail) return { title: service.detail.meta.title, description: service.detail.meta.description };
-  return { title: service.page.metaTitle, description: service.page.intro };
+  const { meta } = getService(id).detail;
+  return { title: meta.title, description: meta.description };
 }
 
-/** "01", "02"… for the numbered inclusions and steps. */
-const pad = (i: number) => String(i + 1).padStart(2, "0");
+type Preselect = readonly ServiceId[];
 
-/** Shared template for the service pages. */
+/**
+ * Shared template for the four service pages. The hero is the one bold moment: the copy
+ * beside a tint stage that runs to the edge of the screen, where the service's clay icon
+ * lands on an example of the work. Everything after it uses the home page's own parts
+ * (section heads, ruled lists, amber ticks, the step track, the FAQ and the closing band),
+ * so the service pages read as the same site. Section ids match the reference anchors
+ * (#included, #questions, #contact).
+ */
 export function ServicePage({ id }: { id: ServiceId }) {
   const service = getService(id);
   const preselect = [id] as const;
+  const { detail } = service;
 
   return (
     <SiteShell variant="service" preselect={preselect}>
-      {service.detail ? (
-        <DetailSections service={service} detail={service.detail} preselect={preselect} />
-      ) : (
-        <LegacySections service={service} page={service.page} preselect={preselect} />
-      )}
-    </SiteShell>
-  );
-}
+      <Hero service={service} preselect={preselect} />
+      <Included detail={detail} />
+      <Handover detail={detail} />
 
-type SectionsProps = { service: Service; preselect: readonly ServiceId[] };
-
-/**
- * The full page, in the reference order: hero with the approach panel, what's included,
- * the handover, how we work together, questions and the closing call to action. Section
- * ids match the reference anchors (#included, #process, #questions, #contact).
- */
-function DetailSections({ service, detail, preselect }: SectionsProps & { detail: ServiceDetail }) {
-  const { hero, included, handover, process } = detail;
-
-  return (
-    <>
-      <section data-cta-hide aria-labelledby="service-title" className="pt-6 pb-16 sm:pt-8 lg:pb-24">
-        <div className="container-site">
-          <TextLink href={servicePage.backHref} arrow="left" className="flex-row-reverse">
-            {servicePage.backLink}
-          </TextLink>
-
-          <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
-            <div>
-              <Eyebrow>{hero.eyebrow}</Eyebrow>
-              <Heading as="h1" id="service-title" className="mt-5" content={hero.title} />
-              <p className="measure mt-7 text-lead text-muted">{hero.text}</p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3">
-                <EnquiryTrigger preselect={preselect} className="w-full sm:w-auto">
-                  {hero.cta}
-                </EnquiryTrigger>
-                <TextLink href="#included">{servicePage.includedLink}</TextLink>
-              </div>
-            </div>
-
-            <aside aria-labelledby="service-approach" className="on-deep rounded-panel bg-deep p-7 text-white sm:p-9">
-              <p aria-hidden="true" className="text-[4rem] leading-none font-bold tracking-[-0.04em] text-white/25 tabular-nums">
-                {service.number}
-              </p>
-              <Eyebrow className="mt-8">{servicePage.panel.eyebrow}</Eyebrow>
-              <h2 id="service-approach" className="mt-3 text-h4 font-bold">
-                {hero.panel.title}
-              </h2>
-              <dl className="mt-8 grid gap-5 border-t border-white/15 pt-6">
-                <div>
-                  <dt className="text-small text-on-deep">{servicePage.panel.builtAround}</dt>
-                  <dd className="mt-1 font-semibold">{hero.panel.builtAround}</dd>
-                </div>
-                <div>
-                  <dt className="text-small text-on-deep">{servicePage.panel.engagement}</dt>
-                  <dd className="mt-1 font-semibold">{hero.panel.engagement}</dd>
-                </div>
-              </dl>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <Section id="included" aria-labelledby="included-title">
-        <SectionHead
-          eyebrow={included.eyebrow}
-          title={included.title}
-          titleId="included-title"
-          intro={<p>{included.intro}</p>}
-          layout="split"
-        />
-        <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-y-14">
-          {included.items.map((item, i) => (
-            <li key={item.title} className="border-t border-line pt-6">
-              <p className="text-small font-medium text-muted tabular-nums">{pad(i)}</p>
-              <h3 className="mt-2 text-h5 font-bold">{item.title}</h3>
-              <p className="mt-3 text-muted">{item.text}</p>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section ground="tint" aria-labelledby="handover-title">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-start lg:gap-20">
-          <div>
-            <SectionHead
-              eyebrow={servicePage.handover.eyebrow}
-              title={servicePage.handover.title}
-              titleId="handover-title"
-              intro={<p>{handover.intro}</p>}
-            />
-            <h3 className="mt-12 text-h5 font-bold">{servicePage.handover.preparesTitle}</h3>
-            <Checklist items={handover.prepares} className="mt-5" />
-          </div>
-
-          <aside aria-labelledby="control-title" className="rounded-panel bg-white p-7 shadow-raised sm:p-10">
-            <Eyebrow>{servicePage.handover.controlEyebrow}</Eyebrow>
-            <Heading as="h3" id="control-title" className="mt-4" content={servicePage.handover.controlTitle} />
-            <ul className="mt-7 border-t border-line">
-              {handover.control.map((item) => (
-                <li key={item} className="border-b border-line py-4 font-semibold">
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 text-small text-muted">{handover.note}</p>
-          </aside>
-        </div>
-      </Section>
-
-      <Section ground="deep" id="process" aria-labelledby="process-title">
-        <SectionHead eyebrow={servicePage.process.eyebrow} title={process.title} titleId="process-title" />
+      <Section ground="tint" aria-labelledby="process-title">
+        <SectionHead eyebrow={servicePage.process.eyebrow} title={detail.process.title} titleId="process-title" />
         <StepTrack
-          steps={process.steps.map((step, i) => ({ ...step, number: pad(i) }))}
-          className="mt-14 lg:mt-20"
+          steps={detail.process.steps.map((step, i) => ({ ...step, number: `0${i + 1}` }))}
+          className="mt-12 lg:mt-16"
         />
       </Section>
 
       <Faq copy={{ ...servicePage.faq, ...detail.faq }} />
-
-      <ContactCta copy={{ id: "contact", ...detail.contact, cta: hero.cta }} preselect={preselect} />
-    </>
+      <ContactCta copy={{ id: "contact", ...detail.contact, cta: detail.hero.cta }} preselect={preselect} />
+    </SiteShell>
   );
 }
 
-/** The earlier, shorter page: intro, a five-item list and a callout. */
-function LegacySections({ service, page, preselect }: SectionsProps & { page: LegacyPage }) {
+/**
+ * The first viewport. From lg the copy sits on the left and the stage fills the right,
+ * from the top of the window (under the header) to the hero's foot and out to the
+ * screen edge. On phones
+ * the stage follows the copy, edge to edge, so the action stays in the first screen.
+ */
+function Hero({ service, preselect }: { service: Service; preselect: Preselect }) {
+  const { detail } = service;
+  const { hero } = detail;
+
   return (
-    <>
-      <section data-cta-hide aria-labelledby="service-title" className="pt-6 pb-16 sm:pt-8 lg:pb-24">
-        <div className="container-site">
-          <TextLink href={servicePage.backHref} arrow="left" className="flex-row-reverse">
+    <section data-cta-hide aria-labelledby="service-title" className="overflow-x-clip">
+      <div className="container-site grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-x-[clamp(40px,5vw,72px)]">
+        <div className="flex flex-col pt-4 pb-14 sm:pt-6 lg:pt-8 lg:pb-[clamp(56px,6vw,96px)]">
+          <TextLink href={servicePage.backHref} arrow="left" className="flex-row-reverse self-start">
             {servicePage.backLink}
           </TextLink>
 
-          <div className="mt-10 grid gap-8 lg:mt-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <div>
-              <Eyebrow>{page.eyebrow}</Eyebrow>
-              <Heading as="h1" id="service-title" className="mt-5" content={serviceHeading(service)} />
+          <div className="mt-8 lg:my-auto lg:pt-10">
+            <Eyebrow>{hero.eyebrow}</Eyebrow>
+            <Heading as="h1" size="title" id="service-title" className="mt-4" content={hero.title} />
+            <p className="measure mt-6 text-lead text-muted">{hero.text}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+              <EnquiryTrigger preselect={preselect} className="w-full sm:w-auto">
+                {hero.cta}
+              </EnquiryTrigger>
+              <TextLink href="#included">{servicePage.includedLink}</TextLink>
             </div>
-            <div className="lg:pb-3">
-              <p className="measure text-lead text-muted">{page.intro}</p>
-              {/* The same colour-coded tags as the home week sheet, so the pages read as one system. */}
-              <ul aria-hidden="true" className="mt-6 flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className={cn("rounded-[10px] px-3 py-2 text-small font-semibold", serviceSwatch[service.id].chip)}
-                  >
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            </div>
+
+            <dl className="mt-10 grid gap-x-8 gap-y-4 border-t border-line pt-6 sm:grid-cols-2 lg:mt-12">
+              <div>
+                <dt className="text-small font-semibold text-muted">{servicePage.panel.builtAround}</dt>
+                <dd className="mt-1 font-semibold">{hero.panel.builtAround}</dd>
+              </div>
+              <div>
+                <dt className="text-small font-semibold text-muted">{servicePage.panel.engagement}</dt>
+                <dd className="mt-1 font-semibold">{hero.panel.engagement}</dd>
+              </div>
+            </dl>
           </div>
         </div>
-      </section>
 
-      <section aria-labelledby="service-includes" className="bg-tint py-section">
-        <div className="container-site grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-          <Heading id="service-includes" content={service.tagline} className="self-start lg:sticky lg:top-28" />
-          <ul className="border-t border-line">
-            {page.items.map((item) => (
-              <li key={item} className="flex items-start gap-4 border-b border-line py-5 text-lead font-semibold">
-                <CheckIcon className="mt-[5px]" />
+        <SheetMotion
+          className={[
+            "flex items-center bg-tint pt-24 pb-16 sm:py-20",
+            // Phones and tablets: edge to edge. From lg: out to the right edge only, rounded on the left.
+            "mx-[calc(var(--bleed)*-1)] px-(--bleed)",
+            // From lg it also rises 80px under the floating header, so the capsule frosts over it.
+            "lg:mr-[calc(var(--bleed)*-1)] lg:ml-0 lg:rounded-bl-hero lg:pr-(--bleed) lg:pl-[clamp(32px,4vw,64px)]",
+            "lg:-mt-20 lg:pt-[calc(80px+4rem)] lg:pb-16",
+          ].join(" ")}
+        >
+          <div className="relative w-full">
+            {/* The clay icon sits on the sheet's top corner. On phones it rests on the top edge; from sm it
+                overlaps the header row, which keeps that end clear. */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-[68px] right-1 z-10 w-[76px] rotate-[8deg] sm:-top-16 sm:-right-5 sm:w-[clamp(84px,9vw,132px)]"
+            >
+              <div data-sheet-drift>
+                <div data-sheet-icon data-hero-anim>
+                  <Image src={serviceArt[service.id]} alt="" sizes="140px" loading="eager" className="h-auto w-full" />
+                </div>
+              </div>
+            </div>
+            <ExampleSheet sheet={exampleSheets[service.id]} detail={detail} />
+          </div>
+        </SheetMotion>
+      </div>
+    </section>
+  );
+}
+
+type Props = { detail: ServiceDetail };
+
+/** What's included: the six tasks as a ruled grid. They are options, not steps, so they carry no numbers. */
+function Included({ detail }: Props) {
+  const { included } = detail;
+  return (
+    <Section id="included" aria-labelledby="included-title">
+      <SectionHead
+        layout="split"
+        eyebrow={included.eyebrow}
+        title={included.title}
+        titleId="included-title"
+        intro={<p>{included.intro}</p>}
+      />
+      <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-y-14">
+        {included.items.map((item) => (
+          <li key={item.title} className="border-t border-line pt-6">
+            <h3 className="text-h5 font-bold">{item.title}</h3>
+            <p className="mt-3 text-muted">{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  );
+}
+
+/** The handover as one joined panel: what Garified prepares on tint, beside what your team decides on deep. */
+function Handover({ detail }: Props) {
+  const { handover } = detail;
+  const copy = servicePage.handover;
+  return (
+    <Section aria-labelledby="handover-title">
+      <SectionHead
+        layout="split"
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        titleId="handover-title"
+        intro={<p>{handover.intro}</p>}
+      />
+
+      <div className="mt-12 grid overflow-hidden rounded-hero lg:mt-16 lg:grid-cols-2">
+        <div className="bg-tint p-6 sm:p-10 lg:p-12">
+          <h3 className="text-h4 font-bold">{copy.preparesTitle}</h3>
+          <ul className="mt-8 border-t border-navy/10">
+            {handover.prepares.map((item) => (
+              <li key={item} className="flex items-start gap-3.5 border-b border-navy/10 py-4 font-semibold">
+                <CheckIcon className="mt-0.5" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
-      </section>
 
-      <section aria-labelledby="service-callout" className="py-section">
-        <div className="container-site">
-          <div className="on-deep grid gap-8 rounded-panel bg-deep p-7 text-white sm:p-10 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16 lg:p-14">
-            <div>
-              <Heading as="h3" id="service-callout" content={page.callout.title} />
-              <p className="measure mt-5 text-on-deep">{page.callout.text}</p>
-            </div>
-            <EnquiryTrigger variant="white" preselect={preselect} className="w-full sm:w-auto">
-              {servicePage.calloutLink}
-            </EnquiryTrigger>
-          </div>
+        <div className="on-deep flex flex-col bg-deep p-6 text-white sm:p-10 lg:p-12">
+          <h3 className="text-h4 font-bold">
+            <RichText content={copy.controlTitle} />
+          </h3>
+          <ul className="mt-8 border-t border-white/15">
+            {handover.control.map((item) => (
+              <li key={item} className="border-b border-white/15 py-4 font-semibold">
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-auto flex items-center gap-3 pt-8 font-semibold text-amber">
+            <CheckIcon />
+            {copy.controlEyebrow}
+          </p>
         </div>
-      </section>
-    </>
+      </div>
+
+      <p className="mt-5 text-small text-muted">{handover.note}</p>
+    </Section>
   );
 }

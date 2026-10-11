@@ -9,14 +9,14 @@ type ServiceBase = {
   number: string;
   href: `/services/${ServiceId}`;
   title: string;
-  /** Short line under the title on the home list, and the H2 on the legacy service page. */
+  /** Short line under the title on the home list. */
   tagline: string;
   /** Home list description. */
   summary: string;
   tags: readonly string[];
 };
 
-/** The full service page: hero, what's included, handover, process, FAQ and contact. */
+/** The service page: hero, what's included, handover, process, FAQ and contact. */
 export type ServiceDetail = {
   meta: { title: string; description: string };
   hero: {
@@ -52,24 +52,12 @@ export type ServiceDetail = {
   contact: { eyebrow: string; title: Rich; text: string };
 };
 
-/** The earlier, shorter service page. Accounting still uses it. */
-export type LegacyServicePage = {
-  metaTitle: string;
-  eyebrow: string;
-  /** Intro paragraph, also the meta description. */
-  intro: string;
-  items: readonly string[];
-  callout: { title: string; text: string };
-};
+export type Service = ServiceBase & { detail: ServiceDetail };
 
-export type Service = ServiceBase &
-  ({ detail: ServiceDetail; page?: never } | { page: LegacyServicePage; detail?: never });
-
-/** Copy shared by every full service page. */
+/** Copy shared by every service page. */
 export const servicePage = {
   backLink: "All services",
   backHref: "/#services",
-  calloutLink: "Discuss this service",
   includedLink: "What’s included",
   panel: {
     eyebrow: "The Garified approach",
@@ -464,21 +452,115 @@ export const services = [
     summary:
       "Invoice preparation, payment matching and organised finance records, working alongside your accountant or registered practitioner.",
     tags: ["Invoice preparation", "Reconciliations", "Finance reporting"],
-    page: {
-      metaTitle: "Accounting support | Garified",
-      eyebrow: "04 / Garified services",
-      intro:
-        "Keep finance preparation moving with organised inputs and a visible exception list. Our financial administration works alongside your provider's accountant or appropriately registered practitioner.",
-      items: [
-        "Prepare invoices from approved service records and rates",
-        "Match payments and perform agreed bank reconciliations",
-        "Follow up debtors through approved messages",
-        "Compile timesheet and payroll input packs",
-        "Prepare summaries from approved accounting records",
-      ],
-      callout: {
-        title: "Preparation with the right review.",
-        text: "BAS, tax interpretation and regulated payroll or accounting work require the appropriate registered practitioner and engagement. Your provider or practitioner retains the relevant decisions and authorisations.",
+    detail: {
+      meta: {
+        title: "NDIS Accounting Support | Garified",
+        description:
+          "Accounting support for NDIS providers: invoice preparation, payment matching, bank reconciliations, debtor follow-up, payroll inputs and finance reporting.",
+      },
+      hero: {
+        eyebrow: "Accounting support for NDIS providers",
+        title: ["Clearer records.", BR, { em: "A better business view." }],
+        text: "Finance administration for NDIS providers who need organised invoices, payment records and payroll inputs. We prepare the agreed work alongside your accountant or appropriately registered practitioner.",
+        cta: "Discuss accounting support",
+        panel: {
+          title: "Organised finance inputs, visible exceptions and the right review.",
+          builtAround: "NDIS providers with recurring invoicing and payroll",
+          engagement: "Agreed scope. Clear reporting. Named contact.",
+        },
+      },
+      included: {
+        eyebrow: "01 / Your accounting support",
+        title: ["Practical support.", BR, { em: "Cleaner records." }],
+        intro:
+          "Choose the finance tasks your business needs help with. We agree your systems, approved inputs, review process and reporting before starting.",
+        items: [
+          {
+            title: "Invoice preparation",
+            text: "Prepare invoices from service records and rates approved by your provider. Flag missing evidence or discrepancies before the authorised review.",
+          },
+          {
+            title: "Payment matching",
+            text: "Match received payments to invoices, maintain the agreed debtor record and flag differences for your finance contact.",
+          },
+          {
+            title: "Bank reconciliations",
+            text: "Perform agreed reconciliations in your accounting system using approved classifications and escalate transactions needing interpretation.",
+          },
+          {
+            title: "Debtor follow-up",
+            text: "Prepare statements and follow up overdue invoices using approved messages and escalation instructions.",
+          },
+          {
+            title: "Payroll input packs",
+            text: "Collect approved timesheets and roster records, identify missing inputs and prepare the pack for your payroll team or practitioner.",
+          },
+          {
+            title: "Finance summaries",
+            text: "Compile the agreed invoice, receivables and transaction reports from your approved accounting records.",
+          },
+        ],
+      },
+      handover: {
+        intro:
+          "Your accounting support plan specifies the outputs, reporting cycle and approvals. Here is what that can look like.",
+        prepares: [
+          "Invoice batch ready for approval",
+          "Payment matching and debtor tracker",
+          "Reconciliation exception list",
+          "Payroll input pack",
+          "Regular finance administration summary",
+        ],
+        control: [
+          "Approve service records, rates and invoices",
+          "Authorise payroll, payments and claim submission",
+          "Resolve tax, BAS and payroll interpretations with the relevant practitioner",
+          "Approve the final financial records and reports",
+        ],
+        note: "Final responsibilities, review arrangements and system access are recorded in your agreed scope.",
+      },
+      process: {
+        title: ["Your records.", BR, { em: "Our support." }],
+        steps: [
+          {
+            title: "Confirm the process",
+            text: "Agree your accounting system, approved inputs, reporting cycle and the provider or practitioner who reviews the work.",
+          },
+          {
+            title: "Prepare & reconcile",
+            text: "Process the agreed records, match payments and prepare invoice or payroll inputs with a clear exception list.",
+          },
+          {
+            title: "Review & report",
+            text: "Route decisions for the right approval and provide the agreed summaries and outstanding action list.",
+          },
+        ],
+      },
+      faq: {
+        intro: "What to know about your accounting support before we start.",
+        items: [
+          {
+            q: "Does this include BAS or tax advice?",
+            a: "Garified's core offer is finance administration. Regulated BAS, tax advice and other practitioner work require an appropriately registered practitioner and a separate engagement.",
+          },
+          {
+            q: "Do you choose NDIS rates or decide claim eligibility?",
+            a: "Your provider or relevant adviser supplies and approves the applicable rates, service records and claim decisions. We prepare the agreed administrative inputs and flag inconsistencies.",
+          },
+          {
+            q: "Can you work with our existing accountant?",
+            a: "Yes. We can prepare organised records and exception reports for your existing accountant or registered practitioner, following the agreed division of responsibilities.",
+          },
+          {
+            q: "Can we start with invoicing and payment matching?",
+            a: "Yes. Start with a clearly defined finance workflow and expand only after the volume, review process and service hours have been agreed.",
+          },
+        ],
+      },
+      contact: {
+        eyebrow: "Let’s organise your finances",
+        title: ["Clearer finances.", BR, { em: "More room to focus." }],
+        text: "Tell us about the finance tasks taking your time. Start with an accounting support scope alongside your existing accountant or registered practitioner.",
       },
     },
   },
@@ -488,11 +570,6 @@ export function getService(id: ServiceId): Service {
   const service = services.find((s) => s.id === id);
   if (!service) throw new Error(`Unknown service: ${id}`);
   return service;
-}
-
-/** H1 on the legacy service page: the title plus a full stop. */
-export function serviceHeading(service: Service) {
-  return `${service.title}.`;
 }
 
 /** "Explore rostering" — the aria label on each home list link. */
