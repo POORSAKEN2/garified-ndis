@@ -11,14 +11,15 @@ import { HeroIcons } from "./HeroIcons";
 // Fills the viewport below the sticky header (`--head`) and
 // centres the copy vertically; on short screens it grows with the content instead. Gaps
 // scale with viewport height (svh) so the block keeps the same proportions on every screen.
-// From md it stops 72px short, so the next section peeks up as a cue to scroll.
+// It stops 72px short, so the photo below peeks up as a cue to scroll; on phones, where
+// nothing moves to say there is more, that edge is the only cue.
 export function Hero() {
   const { hero } = home;
   return (
     <section
       data-cta-hide
       aria-labelledby="hero-title"
-      className="relative flex min-h-[calc(100svh_-_var(--head))] items-center py-[clamp(2rem,6svh,4rem)] md:min-h-[calc(100svh_-_var(--head)_-_72px)]"
+      className="relative flex min-h-[calc(100svh_-_var(--head)_-_72px)] items-center py-[clamp(2rem,6svh,4rem)]"
     >
       <HeroIcons />
       <CopyMotion className="container-site relative flex flex-col items-center text-center">

@@ -205,31 +205,20 @@ html:not(.js) [data-mobile-nav] {
 
 /*
  * The drawer slides out from under the bar, which sits above it, while the scrim fades
- * in and the rows follow a beat apart. Opening only, like the dialog.
+ * in. Opening only, like the dialog. Quick, and in one piece with its rows, so every
+ * link is in place and tappable as soon as the drawer is.
  */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-mobile-nav][data-open] {
-    transition: translate 420ms var(--ease-out-expo);
+    transition: translate 260ms var(--ease-out-expo);
 
     @starting-style {
       translate: 0 -100%;
     }
   }
 
-  .js [data-mobile-nav][data-open] [data-nav-row] {
-    transition:
-      opacity 300ms ease-out,
-      translate 420ms var(--ease-out-expo);
-    transition-delay: calc(80ms + var(--row) * 50ms);
-
-    @starting-style {
-      opacity: 0;
-      translate: 0 -10px;
-    }
-  }
-
   .js [data-nav-scrim] {
-    transition: opacity 300ms ease-out;
+    transition: opacity 200ms ease-out;
 
     @starting-style {
       opacity: 0;
@@ -279,11 +268,15 @@ html:not(.js) [data-mobile-nav] {
 }
 
 /*
+ * Full motion runs only where this query matches: tablets and up, held at least 512px
+ * tall (`fullMotion` in components/motion/media.ts; keep the two in step). Phones,
+ * upright or on their side, get every section at rest from first paint.
+ *
  * Hero first paint (spec 10.2). The inline head script adds .js before paint, so
  * sheet tasks start hidden only when a script can reveal them. Until the motion code
  * mounts and sets data-hero-ready, a fallback shows them after 2.5s in case it never does.
  */
-@media (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) and (min-width: 48rem) and (min-height: 32rem) {
   .js [data-hero-anim] {
     opacity: 0;
   }
@@ -299,9 +292,9 @@ html:not(.js) [data-mobile-nav] {
 }
 
 /*
- * Zoom reveal (ZoomMotion). The tall scroll track (220svh, 260svh from md, so the copy
- * gets its own stretch of scroll) and the starting state exist only when the motion code
- * can run, so without JS or under reduced motion the section is a plain full-width photo
+ * Zoom reveal (ZoomMotion). The tall scroll track (260svh, so the copy gets its own
+ * stretch of scroll) and the starting state exist only when the motion code can run, so
+ * on phones, without JS or under reduced motion the section is a plain full-width photo
  * with the ribbon already on it. ZoomMotion moves two variables from 0 to 1: --reveal opens
  * the frame from the container's width (bottom pulled up 18%, hero corners) to the full
  * stage, its top edge staying put so it peeks under the hero, and --zoom settles the
@@ -309,11 +302,11 @@ html:not(.js) [data-mobile-nav] {
  * it), its rules and dividers undrawn (--draw scales them), its title and items below
  * their clips and its ticks hidden.
  */
-@media (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) and (min-width: 48rem) and (min-height: 32rem) {
   .js [data-zoom-reveal] {
     --reveal: 0;
     --zoom: 0;
-    height: 220svh;
+    height: 260svh;
   }
   .js [data-ribbon-tick] {
     opacity: 0;
@@ -340,22 +333,16 @@ html:not(.js) [data-mobile-nav] {
   .js [data-zoom-photo] {
     scale: calc(1.25 - 0.25 * var(--zoom));
   }
-
-  @media (min-width: 48rem) {
-    .js [data-zoom-reveal] {
-      height: 260svh;
-    }
-  }
 }
 
 /*
  * Footer logo. The full logo rises out of the clip line at its own bottom edge while it
  * scrolls into view, and lands as the page ends. Scroll-linked, so it follows the reader
- * rather than playing on its own, and needs no JS. Where scroll timelines are missing
- * or motion is reduced, the logo simply sits in place.
+ * rather than playing on its own, and needs no JS. On phones, where scroll timelines are
+ * missing or where motion is reduced, the logo simply sits in place.
  */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 48rem) and (min-height: 32rem) {
     [data-footer-logo] {
       view-timeline: --footer-logo block;
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type CSSProperties, type Ref } from "react";
+import { useEffect, type Ref } from "react";
 import { site } from "@/content/site";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { ArrowIcon } from "@/components/ui/Icons";
@@ -92,15 +92,10 @@ export function MobileNavPanel({ open, active, onClose }: PanelProps) {
       >
         <div className="container-site pb-6">
           <ul>
-            {site.nav.links.map((link, i) => {
+            {site.nav.links.map((link) => {
               const current = active === link.href.slice(1);
               return (
-                <li
-                  key={link.href}
-                  data-nav-row
-                  style={{ "--row": i } as CSSProperties}
-                  className="border-b border-line"
-                >
+                <li key={link.href} className="border-b border-line">
                   <a
                     href={link.href}
                     onClick={() => onClose()}

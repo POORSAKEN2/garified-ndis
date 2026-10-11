@@ -145,3 +145,28 @@ by a hairline across the window.
 | Service stage rose 80px under the capsule | Stage starts at the bar's rule | Nothing to frost through a solid bar |
 
 Always sticky, never hides on scroll: the most predictable choice for busy readers.
+
+## Phones: motion at rest (2026-10-11)
+
+The owner asked for less animation on phones, so people can move through the page
+easily. Full motion now runs only where `fullMotion` matches (`components/motion/media.ts`,
+repeated in globals.css): 768px wide and up, and at least 512px tall, so phones turned
+on their side count as phones. On phones every section is at rest from the first paint.
+
+| Before, on phones | Now | Why |
+| --- | --- | --- |
+| Zoom reveal pinned the photo over a 220svh track (about 1,850px of scrolling on a 390×844 phone) | The photo, full width at a 4:5 crop, with the ribbon already on it | That was nearly two screens of scrolling that only played an effect. The home page is about 1,440px shorter |
+| Hero copy rose in word by word | Copy is there at first paint | The headline is the first thing read; nothing should stand between it and the reader |
+| Service sheet blank until scrolled to, then landed, stamped and drifted | Sheet, icon and statuses at rest | Content never waits on a trigger to show |
+| Footer logo rose out of its clip | Sits in place | Decoration only |
+| Hero fills the screen below the bar | Stops 72px short, as it already did from md | The photo's edge is now the only cue that more follows |
+| Menu drawer 420ms, rows following a beat apart | 260ms, rows with the drawer; scrim 200ms | Every link is in place and tappable as soon as the drawer is |
+| Lenis ran its frame loop | Not started on touch-only screens | It never touched touch scrolling |
+
+Kept on phones: the approach track fill (short, plays once, never hides text, and the
+steps are a real sequence), plus motion that answers a tap: the drawer, FAQ answers,
+the dialog and the Let’s talk bar. Tablets and desktops are unchanged.
+
+The track fill now moves `--fill` and StepTrack picks the axis in CSS, so turning a
+tablet across lg no longer leaves the line scaled along the wrong axis. The hero icons'
+loops run only from xl, where the icons show.

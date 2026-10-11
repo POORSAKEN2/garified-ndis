@@ -2,6 +2,7 @@
 
 import { animate, createTimeline, stagger } from "animejs";
 import { useRef, type ReactNode } from "react";
+import { fullMotion } from "./media";
 import { playInView } from "./play-in-view";
 import { useAnimeScope } from "./use-anime-scope";
 
@@ -10,8 +11,9 @@ import { useAnimeScope } from "./use-anime-scope";
  * Also drives the service page hero, where the service's clay icon first lands on the
  * example sheet, then the rows rise in and their statuses stamp on, and the icon keeps a
  * slow drift. Tasks, ticks and the icon carry `data-hero-anim`, so CSS hides them before
- * first paint (only when JS and motion are on). Plays when the sheet is well into view,
- * which on phones is after the visitor scrolls past the hero copy.
+ * first paint (only when JS and motion are on). Plays when the sheet is well into view.
+ * Phones skip it: there the sheet sits below the copy, and it is shown at rest rather
+ * than left blank until the visitor scrolls to it.
  */
 export function SheetMotion({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -82,7 +84,7 @@ export function SheetMotion({ children, className }: { children: ReactNode; clas
       stop();
       delete html.dataset.heroReady;
     };
-  });
+  }, fullMotion);
 
   return (
     <div ref={ref} className={className}>

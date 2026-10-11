@@ -2,14 +2,16 @@
 
 import { animate, stagger } from "animejs";
 import { useRef, type ReactNode } from "react";
+import { heroIcons } from "./media";
 import { useAnimeScope } from "./use-anime-scope";
 
 /**
  * Hero icons: each one pops in (scale, lift and a small counter-turn settling onto its
  * resting tilt), then drifts on a slow loop. Every icon gets its own period so the four
  * never bob in step. The pop-in lives on `[data-float-pop]` and the drift on its parent
- * `[data-float]`, so the two never fight over the same transform. Skipped entirely under
- * reduced motion, where the icons simply sit at their resting tilt.
+ * `[data-float]`, so the two never fight over the same transform. Runs only from `xl`,
+ * where the icons show, so no loop ticks over hidden icons on smaller screens. Skipped
+ * entirely under reduced motion, where the icons simply sit at their resting tilt.
  */
 export function FloatMotion({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,7 +48,7 @@ export function FloatMotion({ children, className }: { children: ReactNode; clas
     return () => {
       delete html.dataset.heroReady;
     };
-  });
+  }, heroIcons);
 
   return (
     <div ref={ref} className={className}>

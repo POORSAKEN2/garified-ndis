@@ -2,13 +2,15 @@
 
 import { createTimeline, splitText, stagger, utils } from "animejs";
 import { useRef, type ReactNode } from "react";
+import { fullMotion } from "./media";
 import { useAnimeScope } from "./use-anime-scope";
 
 /**
  * Hero copy entrance: the eyebrow, then the headline word by word, then the text, buttons
  * and note, each rising a short way into place. Plays once on load and is over in about a
  * second, so the headline is readable almost immediately. The wrapper carries
- * `data-hero-anim`, so CSS hides it before first paint until this takes over.
+ * `data-hero-anim`, so CSS hides it before first paint until this takes over. Phones skip
+ * it and get the copy at first paint.
  */
 export function CopyMotion({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,7 +41,7 @@ export function CopyMotion({ children, className }: { children: ReactNode; class
       splitter.revert();
       delete html.dataset.heroReady;
     };
-  });
+  }, fullMotion);
 
   return (
     <div ref={ref} data-hero-anim className={className}>

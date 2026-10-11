@@ -2,6 +2,7 @@
 
 import { createDrawable, createTimeline, onScroll } from "animejs";
 import { useRef, type ReactNode } from "react";
+import { fullMotion } from "./media";
 import { useAnimeScope } from "./use-anime-scope";
 
 /**
@@ -11,7 +12,8 @@ import { useAnimeScope } from "./use-anime-scope";
  * one at a time. Scrolling back plays it in reverse. The frame and zoom only
  * move CSS variables (`--reveal`, `--zoom`, 0 to 1); globals.css turns them into the clip
  * and scale, and sets every starting value before first paint, so nothing jumps when
- * this takes over. The section is the scroll track.
+ * this takes over. The section is the scroll track. Phones skip it: pinning the photo
+ * there cost nearly two screens of scrolling, so they get it with the ribbon already on.
  */
 export function ZoomMotion({
   children,
@@ -81,7 +83,7 @@ export function ZoomMotion({
         check.style.removeProperty("stroke-linecap");
       }
     };
-  });
+  }, fullMotion);
 
   return (
     <section ref={ref} data-zoom-reveal aria-label={label} className={className}>

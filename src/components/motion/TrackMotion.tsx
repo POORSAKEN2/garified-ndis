@@ -7,19 +7,20 @@ import { useAnimeScope } from "./use-anime-scope";
 
 /**
  * Approach steps: the amber track fills along the three steps (down on phones, across
- * from lg) and each dot pops as the line reaches it. Without JS the track shows full.
+ * from lg) and each dot pops as the line reaches it. The fill only moves `--fill` from 0
+ * to 1; StepTrack picks the axis in CSS, so turning a tablet across lg never leaves the
+ * line scaled the wrong way. Short, played once and with the text never hidden, so it
+ * stays on phones as their one moment. Without JS the track shows full.
  */
 export function TrackMotion({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useAnimeScope(ref, () => {
-    const axis = window.matchMedia("(min-width: 1024px)").matches ? "scaleX" : "scaleY";
-
-    utils.set("[data-approach-fill]", { [axis]: 0 });
+    utils.set("[data-approach-fill]", { "--fill": 0 });
     utils.set("[data-approach-dot]", { scale: 0.4, opacity: 0 });
 
     const fill = animate("[data-approach-fill]", {
-      [axis]: 1,
+      "--fill": 1,
       duration: 1100,
       ease: "inOutQuart",
       autoplay: false,

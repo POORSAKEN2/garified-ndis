@@ -11,12 +11,16 @@ export function StepTrack({ steps, className }: { steps: readonly Step[]; classN
   return (
     <TrackMotion>
       <ol data-approach-steps className={cn("relative grid gap-10 pl-12 lg:grid-cols-3 lg:gap-12 lg:pl-0", className)}>
-        {/* Track: vertical on phones, horizontal from lg. */}
+        {/* Track: vertical on phones, horizontal from lg. The fill scales along it from --fill
+            (1 unless TrackMotion is running). */}
         <li
           aria-hidden="true"
           className="absolute top-3 bottom-3 left-[11px] w-0.5 bg-line in-[.on-deep]:bg-white/15 lg:top-[11px] lg:right-3 lg:bottom-auto lg:left-3 lg:h-0.5 lg:w-auto"
         >
-          <span data-approach-fill className="absolute inset-0 origin-top bg-amber lg:origin-left" />
+          <span
+            data-approach-fill
+            className="absolute inset-0 origin-top bg-amber [scale:1_var(--fill,1)] lg:origin-left lg:[scale:var(--fill,1)_1]"
+          />
         </li>
         {steps.map((step) => (
           <li key={step.number} data-approach-step className="relative min-w-0 lg:pt-14">
