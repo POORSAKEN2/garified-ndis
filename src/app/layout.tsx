@@ -23,8 +23,12 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  // Link previews need absolute URLs; the card itself is app/opengraph-image.png.
+  metadataBase: new URL("https://ndis.garifiedsolutions.com"),
   title: home.meta.title,
   description: home.meta.description,
+  openGraph: { siteName: "Garified Solutions", locale: "en_AU", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 // Runs before first paint so hero motion can start from hidden without a flash.
