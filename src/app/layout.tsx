@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { EnquiryProvider } from "@/components/enquiry/EnquiryProvider";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SmoothScroll />
           {children}
         </EnquiryProvider>
+        <Analytics />
       </body>
     </html>
   );
