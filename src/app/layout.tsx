@@ -3,7 +3,9 @@ import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { EnquiryProvider } from "@/components/enquiry/EnquiryProvider";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { home } from "@/content/site";
+import { SITE_NAME, SITE_URL, graph, organizationSchema, websiteSchema } from "@/lib/seo";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -24,10 +26,10 @@ const instrument = Instrument_Serif({
 
 export const metadata: Metadata = {
   // Link previews need absolute URLs; the card itself is app/opengraph-image.png.
-  metadataBase: new URL("https://ndis.garifiedsolutions.com"),
+  metadataBase: new URL(SITE_URL),
   title: home.meta.title,
   description: home.meta.description,
-  openGraph: { siteName: "Garified Solutions", locale: "en_AU", type: "website" },
+  openGraph: { siteName: SITE_NAME, locale: "en_AU", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -47,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
       </head>
       <body className="flex min-h-dvh flex-col">
+        <JsonLd data={graph(organizationSchema(), websiteSchema())} />
         <SkipLink />
         <EnquiryProvider>
           <SmoothScroll />

@@ -5,6 +5,8 @@ import { getService, servicePage, type Service, type ServiceDetail } from "@/con
 import type { ServiceId } from "@/content/types";
 import { EnquiryTrigger } from "@/components/enquiry/EnquiryTrigger";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbSchema, faqSchema, graph, pageMetadata, serviceSchema } from "@/lib/seo";
 import { SheetMotion } from "@/components/motion/SheetMotion";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Faq } from "@/components/sections/Faq";
@@ -21,8 +23,8 @@ import { includedIcon } from "./included-icon";
 import { serviceArt } from "./service-art";
 
 export function serviceMetadata(id: ServiceId): Metadata {
-  const { meta } = getService(id).detail;
-  return { title: meta.title, description: meta.description };
+  const service = getService(id);
+  return pageMetadata({ ...service.detail.meta, path: service.href });
 }
 
 type Preselect = readonly ServiceId[];
@@ -42,6 +44,7 @@ export function ServicePage({ id }: { id: ServiceId }) {
 
   return (
     <SiteShell variant="service" preselect={preselect}>
+      <JsonLd data={graph(serviceSchema(service), breadcrumbSchema(service), faqSchema(detail.faq.items))} />
       <Hero service={service} preselect={preselect} />
       <Included detail={detail} />
       <Handover detail={detail} />
