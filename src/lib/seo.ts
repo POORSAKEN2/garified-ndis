@@ -8,7 +8,7 @@ import type { Service } from "@/content/services";
 import { services } from "@/content/services";
 import { footer, home } from "@/content/site";
 
-export const SITE_URL = "https://ndis.garifiedsolutions.com";
+export const SITE_URL = "https://www.garifiedsolutions.com";
 export const SITE_NAME = "Garified Solutions";
 
 const ORG_ID = `${SITE_URL}/#organization`;
