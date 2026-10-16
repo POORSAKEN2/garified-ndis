@@ -20,6 +20,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Checks and monitoring
+
+Two GitHub Actions workflows guard the live site:
+
+- **CI** (`.github/workflows/ci.yml`) runs on every pull request and push to `main`: lint, unit tests, production build, then starts the built site and checks every page. A red run means the change would break the site, so fix it before merging.
+- **Uptime** (`.github/workflows/uptime.yml`) checks https://www.garifiedsolutions.com every 15 minutes and after each Vercel production deploy. If it fails it opens a `site-down` issue with the failing checks, and closes it once the site passes again. First places to look: the Vercel dashboard (deployments, runtime logs) and the latest commits on `main`; promote the previous deployment in Vercel to roll back.
+
+Both use `scripts/check-site.mjs`, which you can run yourself:
+
+```bash
+node scripts/check-site.mjs https://www.garifiedsolutions.com
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,0 +1,76 @@
+# Catches a change that would break the site before Vercel ships it.
+# Every push to main and every pull request is linted, tested, built for production,
+# then started and smoke-checked page by page (scripts/check-site.mjs).
+# A red run on a pull request means: do not merge until it is green.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch makes the older run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  build:
+    name: Lint, test, build and smoke-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      # Next's build cache, as its CI guide recommends (docs: ci-build-caching).
+      - uses: actions/cache@v6
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**', 'next.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+
+      # Also type-checks. Gmail settings are only read when an enquiry is sent, so the
+      # build needs no secrets.
+      - name: Production build
+        run: npm run build
+
+      - name: Start the production server
+        run: |
+          npm run start -- --port 3000 > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -s -o /dev/null http://localhost:3000 && exit 0
+            sleep 1
+          done
+          echo "Server did not start within 30s"
+          exit 1
+
+      - name: Smoke-check every page
+        run: node scripts/check-site.mjs http://localhost:3000
+
+      - name: Server log
+        if: failure()
+        run: cat server.log || true

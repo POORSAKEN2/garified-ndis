@@ -1,0 +1,85 @@
+# Watches the live site. Runs every 15 minutes and straight after each Vercel production
+# deploy. When a check fails it opens one "site-down" issue (GitHub emails the repo's
+# watchers) with the failing checks; when the site passes again it closes that issue.
+#
+# To check by hand: Actions > Uptime > Run workflow, or locally:
+#   node scripts/check-site.mjs https://www.garifiedsolutions.com
+
+name: Uptime
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  # Vercel reports each deploy back to GitHub as a deployment status.
+  deployment_status:
+  workflow_dispatch:
+
+# Runs queue rather than overlap, so two cannot open the same issue twice.
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  SITE_URL: https://www.garifiedsolutions.com
+  GH_REPO: ${{ github.repository }}
+  GH_TOKEN: ${{ github.token }}
+  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+jobs:
+  check:
+    name: Check ${{ github.event_name == 'deployment_status' && 'new deploy' || 'live site' }}
+    # Preview deploys and unfinished deploys are skipped; only a finished production
+    # deploy changes what visitors see.
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Check ${{ env.SITE_URL }}
+        run: node scripts/check-site.mjs "$SITE_URL"
+        env:
+          CHECK_REPORT: report.md
+
+      - name: Open a site-down issue
+        if: failure()
+        run: |
+          gh label create site-down --color B60205 --description "The live site is failing its uptime check" --force
+          open=$(gh issue list --label site-down --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$open" ]; then
+            echo "Issue #$open is already open; not opening another."
+            exit 0
+          fi
+          {
+            echo "The uptime check on $SITE_URL failed at $(date -u '+%Y-%m-%d %H:%M UTC') (trigger: ${{ github.event_name }})."
+            echo
+            cat report.md 2>/dev/null || echo "No report was written; see the run log."
+            echo
+            echo "Run: $RUN_URL"
+            echo
+            echo "Where to look first: the Vercel dashboard (deployments and runtime logs), then the"
+            echo "last commits on main. To roll back, promote the previous deployment in Vercel."
+            echo "This issue closes itself when the check passes again."
+          } > body.md
+          gh issue create --title "Website down: $SITE_URL is failing its uptime check" --label site-down --body-file body.md
+
+      - name: Close the site-down issue
+        if: success()
+        run: |
+          for n in $(gh issue list --label site-down --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Back up: all checks passed at $(date -u '+%Y-%m-%d %H:%M UTC'). Run: $RUN_URL"
+          done
